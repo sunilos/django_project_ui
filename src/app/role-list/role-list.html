@@ -1,0 +1,44 @@
+<div class="page-wrapper">
+  <div class="page-container">
+    <div class="page-header">
+      <button class="btn-back" (click)="goBack()">&#8592; Back</button>
+      <h1>Roles</h1>
+    </div>
+
+
+    @if (loading) {
+      <div class="state-box">
+        <span class="spinner"></span>
+        <p>Loading roles...</p>
+      </div>
+    } @else if (formData.error) {
+      <div class="error-banner">{{ formData.message }}</div>
+    } @else if (formData.listdata.length === 0) {
+      <div class="state-box">
+        <p>No roles found.</p>
+      </div>
+    } @else {
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (role of formData.listdata; track role.id) {
+              <tr>
+                <td class="cell-id">{{ role.id }}</td>
+                <td class="cell-name">{{ role.name }}</td>
+                <td class="cell-desc">{{ role.description || '—' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        <p class="count">{{ formData.listdata.length }} role{{ formData.listdata.length !== 1 ? 's' : '' }}</p>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="page-wrapper">
+  <div class="page-container">
+    <div class="page-header">
+      <button class="btn-back" (click)="goBack()">&#8592; Back</button>
+      <h1>Colleges</h1>
+    </div>
+
+
+    @if (loading) {
+      <div class="state-box">
+        <span class="spinner"></span>
+        <p>Loading colleges...</p>
+      </div>
+    } @else if (formData.error) {
+      <div class="error-banner">{{ formData.message }}</div>
+    } @else if (formData.listdata.length === 0) {
+      <div class="state-box">
+        <p>No colleges found.</p>
+      </div>
+    } @else {
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Address</th>
+              <th>City</th>
+              <th>State</th>
+              <th>Phone Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (college of formData.listdata; track college.id) {
+              <tr>
+                <td class="cell-id">{{ college.id }}</td>
+                <td class="cell-name">{{ college.name }}</td>
+                <td class="cell-text">{{ college['address'] || '—' }}</td>
+                <td class="cell-text">{{ college['city'] || '—' }}</td>
+                <td class="cell-text">{{ college['state'] || '—' }}</td>
+                <td class="cell-phone">{{ college['phoneNumber'] || '—' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        <p class="count">{{ formData.listdata.length }} college{{ formData.listdata.length !== 1 ? 's' : '' }}</p>
+      </div>
+    }
+  </div>
+</div>
