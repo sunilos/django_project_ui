@@ -21,20 +21,28 @@ export class LoginComponent {
     private router: Router
   ) {
     this.loginForm = this.fb.group({
-      login: ['', Validators.required],
+      loginId: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
 
   onSubmit(): void {
-    let _self= this;
-    if (this.loginForm.invalid) return;
+    let _self = this;
+    if (this.loginForm.invalid || this.loading) return;
     this.loading = true;
     this.errorMessage = '';
-    const { login, password } = this.loginForm.value;
-    this.authService.signin({ login, password }, () => {
-      _self.router.navigate(['/welcome']);
-    });
+    console.log('Submitting login form with values:', this.loginForm.value);
+    const { loginId, password } = this.loginForm.value;
+    this.authService.signin(
+      { loginId, password },
+      () => {
+        this.router.navigate(['/welcome']);
+      },
+      (message) => {
+        _self.loading = false;
+        _self.errorMessage = message;
+      }
+    );
   }
 
   onSubmit1(): void {
@@ -43,8 +51,8 @@ export class LoginComponent {
     this.loading = true;
     this.errorMessage = '';
 
-    const { login, password } = this.loginForm.value;
-    this.authService.login({ login, password }).subscribe({
+    const { loginId, password } = this.loginForm.value;
+    this.authService.login({ login: loginId, password }).subscribe({
       next: (response) => {
         console.log('Login response:', response);
         const token = this.authService.extractToken(response);
