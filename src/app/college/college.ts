@@ -1,8 +1,9 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CollegeService, College } from '../services/college.service';
+import { BaseComponent } from '../base/base.component';
 
 @Component({
   selector: 'app-college',
@@ -10,23 +11,20 @@ import { CollegeService, College } from '../services/college.service';
   templateUrl: './college.html',
   styleUrl: './college.css'
 })
-export class CollegeComponent implements OnInit {
+export class CollegeComponent extends BaseComponent {
+
+  protected override listUrl = '/colleges';
+  override get title(): string { return this.isEditMode ? 'Edit College' : 'Add College'; }
 
   form: FormGroup;
-  isEditMode = false;
-  collegeId: number | null = null;
-  loading = false;
-  saving = false;
-  deleting = false;
-  errorMessage = '';
 
   constructor(
     private fb: FormBuilder,
     private collegeService: CollegeService,
-    private route: ActivatedRoute,
-    private router: Router,
-    @Inject(PLATFORM_ID) private platformId: object
+    router: Router,
+    route: ActivatedRoute
   ) {
+    super(router, route);
     this.form = this.fb.group({
       name: ['', Validators.required],
       address: [''],
@@ -36,83 +34,22 @@ export class CollegeComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (!id) return;
-
-    this.isEditMode = true;
-    this.collegeId = +id;
-
-    const state = isPlatformBrowser(this.platformId) ? history.state as College | undefined : undefined;
-    if (state?.['name']) {
-      this.form.patchValue({
-        name: state['name'],
-        address: state['address'] ?? '',
-        city: state['city'] ?? '',
-        state: state['state'] ?? '',
-        phoneNumber: state['phoneNumber'] ?? ''
-      });
-    } else {
-      this.loading = true;
-      this.collegeService.getById<College>(
-        this.collegeId,
-        (college) => {
-          this.loading = false;
-          this.form.patchValue({
-            name: college.name,
-            address: college.address ?? '',
-            city: college.city ?? '',
-            state: college.state ?? '',
-            phoneNumber: college.phoneNumber ?? ''
-          });
-        },
-        (err: any) => {
-          this.loading = false;
-          this.errorMessage = err?.error?.message || 'Failed to load college.';
-        }
-      );
-    }
+  protected override populateForm(college: any): void {
+    this.form.patchValue({
+      name: college['name'],
+      address: college['address'] ?? '',
+      city: college['city'] ?? '',
+      state: college['state'] ?? '',
+      phoneNumber: college['phoneNumber'] ?? ''
+    });
   }
 
-  get title(): string {
-    return this.isEditMode ? 'Edit College' : 'Add College';
+  protected override getBody(): College {
+    return { id: this.entityId ?? 0, ...this.form.value };
   }
 
-  onSave(): void {
-    if (this.form.invalid || this.saving) return;
-    this.saving = true;
-    this.errorMessage = '';
 
-    const body: College = { id: this.collegeId ?? 0, ...this.form.value };
-    const onSuccess = () => this.router.navigate(['/colleges']);
-    const onError = (err: any) => {
-      this.saving = false;
-      this.errorMessage = err?.error?.message || 'Save failed. Please try again.';
-    };
-
-    if (this.isEditMode && this.collegeId) {
-      this.collegeService.update(this.collegeId, body, onSuccess, onError);
-    } else {
-      this.collegeService.add(body, onSuccess, onError);
-    }
-  }
-
-  onDelete(): void {
-    if (!this.collegeId || this.deleting) return;
-    this.deleting = true;
-    this.errorMessage = '';
-
-    this.collegeService.delete(
-      this.collegeId,
-      () => this.router.navigate(['/colleges']),
-      (err: any) => {
-        this.deleting = false;
-        this.errorMessage = err?.error?.message || 'Delete failed. Please try again.';
-      }
-    );
-  }
-
-  goBack(): void {
-    this.router.navigate(['/colleges']);
+  protected override getService(): CollegeService {
+    return this.collegeService;
   }
 }

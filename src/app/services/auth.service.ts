@@ -1,5 +1,4 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ORSAPI } from './orsapi.config';
@@ -21,15 +20,8 @@ export interface LoginResponse {
 export class AuthService {
   private readonly loginUrl = ORSAPI.LOGIN_API;
   private readonly refreshUrl = ORSAPI.TOKEN_REFRESH_API;
-  // http://127.0.0.1:8000/api/token/refresh/
-  constructor(
-    private http: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: object
-  ) {}
 
-  private get storage(): Storage | null {
-    return isPlatformBrowser(this.platformId) ? localStorage : null;
-  }
+  constructor(private http: HttpClient) {}
 
   login(credentials: LoginCredentials): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(this.loginUrl, credentials);
@@ -47,8 +39,8 @@ export class AuthService {
         const token = response?.['data']?.['access'] as string;
         const refresh_token = response?.['data']?.['refresh'] as string;
         if (token) {
-          this.storage?.setItem('auth_token', token);
-          this.storage?.setItem('refresh_token', refresh_token);
+          localStorage.setItem('auth_token', token);
+          localStorage.setItem('refresh_token', refresh_token);
           if (callback) callback(response);
         } else if (errorCallback) {
           errorCallback(response);
@@ -65,20 +57,18 @@ export class AuthService {
     });
   }
 
-  /** Extract token from any common DRF / JWT / dj-rest-auth response shape. */
   extractToken(response: LoginResponse): string {
     return (response.token ?? response.access ?? response.key ?? '') as string;
   }
 
   saveToken(token: string): void {
-    this.storage?.setItem('auth_token', token);
+    localStorage.setItem('auth_token', token);
   }
 
   getToken(): string | null {
-    return this.storage?.getItem('auth_token') ?? null;
+    return localStorage.getItem('auth_token');
   }
 
-  /** Returns 'Bearer' for JWT tokens (start with eyJ), 'Token' for DRF tokens. */
   getAuthPrefix(): string {
     const token = this.getToken() ?? '';
     return token.startsWith('eyJ') ? 'Bearer' : 'Token';
@@ -89,16 +79,16 @@ export class AuthService {
   }
 
   refreshToken(): Observable<{ access: string }> {
-    const refresh = this.storage?.getItem('refresh_token') ?? '';
+    const refresh = localStorage.getItem('refresh_token') ?? '';
     return this.http.post<{ access: string }>(this.refreshUrl, { refresh });
   }
 
   getRefreshToken(): string | null {
-    return this.storage?.getItem('refresh_token') ?? null;
+    return localStorage.getItem('refresh_token');
   }
 
   logout(): void {
-    this.storage?.removeItem('auth_token');
-    this.storage?.removeItem('refresh_token');
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('refresh_token');
   }
 }
