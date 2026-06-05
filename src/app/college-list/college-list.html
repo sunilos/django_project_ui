@@ -3,6 +3,7 @@
     <div class="page-header">
       <button class="btn-back" (click)="goBack()">&#8592; Back</button>
       <h1>Colleges</h1>
+      <button class="btn-add" (click)="forward('/college/new')">+ Add College</button>
     </div>
 
 
@@ -32,7 +33,7 @@
           </thead>
           <tbody>
             @for (college of formData.listdata; track college.id) {
-              <tr>
+              <tr class="row-link" (click)="editCollege(college)">
                 <td class="cell-id">{{ college.id }}</td>
                 <td class="cell-name">{{ college.name }}</td>
                 <td class="cell-text">{{ college['address'] || '—' }}</td>

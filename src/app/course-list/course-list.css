@@ -5,7 +5,7 @@
 }
 
 .page-container {
-  max-width: 1000px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -53,10 +53,6 @@
 
 .btn-add:hover {
   background: #c73652;
-}
-
-.row-link {
-  cursor: pointer;
 }
 
 .error-banner {
@@ -139,13 +135,18 @@ tbody td {
   font-weight: 500;
 }
 
-.cell-text {
-  color: #374151;
+.cell-desc {
+  color: #6b7280;
+  font-size: 0.875rem;
 }
 
-.cell-phone {
+.cell-duration {
   color: #374151;
   white-space: nowrap;
+}
+
+.row-link {
+  cursor: pointer;
 }
 
 .count {

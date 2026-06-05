@@ -1,0 +1,52 @@
+<div class="page-wrapper">
+  <div class="page-container">
+    <div class="page-header">
+      <button class="btn-back" (click)="goBack()">&#8592; Back</button>
+      <h1>Faculty</h1>
+      <button class="btn-add" (click)="forward('/faculty/new')">+ Add Faculty</button>
+    </div>
+
+    @if (loading) {
+      <div class="state-box">
+        <span class="spinner"></span>
+        <p>Loading faculty...</p>
+      </div>
+    } @else if (formData.error) {
+      <div class="error-banner">{{ formData.message }}</div>
+    } @else if (formData.listdata.length === 0) {
+      <div class="state-box">
+        <p>No faculty found.</p>
+      </div>
+    } @else {
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Mobile</th>
+              <th>College</th>
+              <th>Course</th>
+              <th>Subject</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (faculty of formData.listdata; track faculty.id) {
+              <tr class="row-link" (click)="editFaculty(faculty)">
+                <td class="cell-id">{{ faculty.id }}</td>
+                <td class="cell-name">{{ faculty.firstName }} {{ faculty.lastName }}</td>
+                <td class="cell-text">{{ faculty.email }}</td>
+                <td class="cell-text">{{ faculty.mobileNumber || '—' }}</td>
+                <td class="cell-text">{{ faculty.collegeName || '—' }}</td>
+                <td class="cell-text">{{ faculty.courseName || '—' }}</td>
+                <td class="cell-text">{{ faculty.subjectName || '—' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        <p class="count">{{ formData.listdata.length }} faculty member{{ formData.listdata.length !== 1 ? 's' : '' }}</p>
+      </div>
+    }
+  </div>
+</div>

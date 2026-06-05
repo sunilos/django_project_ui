@@ -16,14 +16,21 @@ export class RoleListComponent extends BaseListComponent implements OnInit {
     super(router, cdr);
   }
 
+  editRole(role: any): void {
+    this.router.navigate(['/role', role.id], { state: role });
+  }
+
   ngOnInit(): void {
     let _self = this;
-    this.roleService.getRoles({}, (response) => {
-      _self.formData.listdata = response.data;
-      _self.formData.error = response.error;
-      _self.formData.message = response.message;
-      console.log('Role response:', response);
-      _self.refresh();
-    });
+    this.roleService.get(
+      (response: any) => {
+        _self.formData.listdata = response.data;
+        _self.formData.error = response.error;
+        _self.formData.message = response.message;
+        console.log('Role response:', response);
+        _self.refresh();
+      },
+      (err: any) => console.error('Role failed:', err)
+    );
   }
 }

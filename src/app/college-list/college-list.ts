@@ -16,12 +16,21 @@ export class CollegeListComponent extends BaseListComponent implements OnInit {
     super(router, cdr);
   }
 
+  editCollege(college: any): void {
+    this.router.navigate(['/college', college.id], { state: college });
+  }
+
   ngOnInit(): void {
     let _self = this;
-    this.collegeService.getColleges(_self.formData, (response) => {
-
-      console.log('College 123 response:', _self.formData);
-      _self.refresh();
-    });
+    this.collegeService.get(
+      (response: any) => {
+        _self.formData.listdata = response.data;
+        _self.formData.error = response.error;
+        _self.formData.message = response.message;
+        console.log('College response:', response);
+        _self.refresh();
+      },
+      (err: any) => console.error('College failed:', err)
+    );
   }
 }

@@ -38,9 +38,11 @@ export class LoginComponent {
       () => {
         this.router.navigate(['/welcome']);
       },
-      (message) => {
+      (res:any) => {
         _self.loading = false;
-        _self.errorMessage = message;
+        
+        _self.errorMessage = res?.['message'] || 'Login failed. Please check your credentials and try again.';
+        console.log('10- Login error response:', res.message);
       }
     );
   }

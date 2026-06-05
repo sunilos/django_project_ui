@@ -3,21 +3,29 @@ import { ORSAPI } from './orsapi.config';
 import { ServiceLocator } from './service-locator';
 import { BaseService } from './base.service';
 
-export interface College {
+export interface Faculty {
   id: number;
-  name: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  mobileNumber: string;
   address?: string;
-  city?: string;
-  state?: string;
-  phoneNumber?: string;
+  gender?: string;
+  dob?: string;
+  college_ID: number;
+  collegeName: string;
+  subject_ID: number;
+  subjectName: string;
+  course_ID: number;
+  courseName: string;
   [key: string]: unknown;
 }
 
 @Injectable({ providedIn: 'root' })
-export class CollegeService extends BaseService {
+export class FacultyService extends BaseService {
 
   constructor(serviceLocator: ServiceLocator) {
     super(serviceLocator);
-    this.url = ORSAPI.COLLEGE_API;
+    this.url = ORSAPI.FACULTY_API;
   }
 }

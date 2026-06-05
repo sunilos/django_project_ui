@@ -1,0 +1,48 @@
+<div class="page-wrapper">
+  <div class="page-container">
+    <div class="page-header">
+      <button class="btn-back" (click)="goBack()">&#8592; Back</button>
+      <h1>Subjects</h1>
+      <button class="btn-add" (click)="forward('/subject/new')">+ Add Subject</button>
+    </div>
+
+    @if (loading) {
+      <div class="state-box">
+        <span class="spinner"></span>
+        <p>Loading subjects...</p>
+      </div>
+    } @else if (formData.error) {
+      <div class="error-banner">{{ formData.message }}</div>
+    } @else if (formData.listdata.length === 0) {
+      <div class="state-box">
+        <p>No subjects found.</p>
+      </div>
+    } @else {
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Subject Name</th>
+              <th>Description</th>
+              <th>Course</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (subject of formData.listdata; track subject.id) {
+              <tr class="row-link" (click)="editSubject(subject)">
+                <td class="cell-id">{{ subject.id }}</td>
+                <td class="cell-name">{{ subject.subjectName }}</td>
+                <td class="cell-desc">{{ subject.subjectDescription || '—' }}</td>
+                <td class="cell-text">{{ subject.courseName || '—' }}</td>
+                <td class="cell-text">{{ subject.dob || '—' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        <p class="count">{{ formData.listdata.length }} subject{{ formData.listdata.length !== 1 ? 's' : '' }}</p>
+      </div>
+    }
+  </div>
+</div>

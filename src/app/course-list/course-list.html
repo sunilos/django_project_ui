@@ -2,21 +2,20 @@
   <div class="page-container">
     <div class="page-header">
       <button class="btn-back" (click)="goBack()">&#8592; Back</button>
-      <h1>Roles</h1>
-      <button class="btn-add" (click)="forward('/role/new')">+ Add Role</button>
+      <h1>Courses</h1>
+      <button class="btn-add" (click)="forward('/course/new')">+ Add Course</button>
     </div>
-
 
     @if (loading) {
       <div class="state-box">
         <span class="spinner"></span>
-        <p>Loading roles...</p>
+        <p>Loading courses...</p>
       </div>
     } @else if (formData.error) {
       <div class="error-banner">{{ formData.message }}</div>
     } @else if (formData.listdata.length === 0) {
       <div class="state-box">
-        <p>No roles found.</p>
+        <p>No courses found.</p>
       </div>
     } @else {
       <div class="table-wrapper">
@@ -26,19 +25,21 @@
               <th>#</th>
               <th>Name</th>
               <th>Description</th>
+              <th>Duration</th>
             </tr>
           </thead>
           <tbody>
-            @for (role of formData.listdata; track role.id) {
-              <tr class="row-link" (click)="editRole(role)">
-                <td class="cell-id">{{ role.id }}</td>
-                <td class="cell-name">{{ role.name }}</td>
-                <td class="cell-desc">{{ role.description || '—' }}</td>
+            @for (course of formData.listdata; track course.id) {
+              <tr class="row-link" (click)="editCourse(course)">
+                <td class="cell-id">{{ course.id }}</td>
+                <td class="cell-name">{{ course.name }}</td>
+                <td class="cell-desc">{{ course.description || '—' }}</td>
+                <td class="cell-duration">{{ course.duration || '—' }}</td>
               </tr>
             }
           </tbody>
         </table>
-        <p class="count">{{ formData.listdata.length }} role{{ formData.listdata.length !== 1 ? 's' : '' }}</p>
+        <p class="count">{{ formData.listdata.length }} course{{ formData.listdata.length !== 1 ? 's' : '' }}</p>
       </div>
     }
   </div>

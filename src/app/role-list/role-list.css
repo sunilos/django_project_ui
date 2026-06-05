@@ -16,6 +16,10 @@
   margin-bottom: 1.5rem;
 }
 
+.page-header {
+  flex: 1;
+}
+
 .page-header h1 {
   font-size: 1.5rem;
   font-weight: 700;
@@ -36,6 +40,27 @@
 
 .btn-back:hover {
   background: rgba(255, 255, 255, 0.22);
+}
+
+.btn-add {
+  margin-left: auto;
+  background: #e94560;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.375rem 0.875rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-add:hover {
+  background: #c73652;
+}
+
+.row-link {
+  cursor: pointer;
 }
 
 .error-banner {

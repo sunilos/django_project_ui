@@ -1,0 +1,50 @@
+<div class="page-wrapper">
+  <div class="page-container">
+    <div class="page-header">
+      <button class="btn-back" (click)="goBack()">&#8592; Back</button>
+      <h1>Students</h1>
+      <button class="btn-add" (click)="forward('/student/new')">+ Add Student</button>
+    </div>
+
+    @if (loading) {
+      <div class="state-box">
+        <span class="spinner"></span>
+        <p>Loading students...</p>
+      </div>
+    } @else if (formData.error) {
+      <div class="error-banner">{{ formData.message }}</div>
+    } @else if (formData.listdata.length === 0) {
+      <div class="state-box">
+        <p>No students found.</p>
+      </div>
+    } @else {
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Mobile</th>
+              <th>College</th>
+              <th>DOB</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (student of formData.listdata; track student.id) {
+              <tr class="row-link" (click)="editStudent(student)">
+                <td class="cell-id">{{ student.id }}</td>
+                <td class="cell-name">{{ student.firstName }} {{ student.lastName }}</td>
+                <td class="cell-text">{{ student.email }}</td>
+                <td class="cell-text">{{ student.mobileNumber || '—' }}</td>
+                <td class="cell-text">{{ student.collegeName || '—' }}</td>
+                <td class="cell-text">{{ student.dob || '—' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        <p class="count">{{ formData.listdata.length }} student{{ formData.listdata.length !== 1 ? 's' : '' }}</p>
+      </div>
+    }
+  </div>
+</div>

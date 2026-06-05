@@ -1,0 +1,83 @@
+<div class="page-wrapper">
+  <div class="page-container">
+    <div class="page-header">
+      <button class="btn-back" (click)="goBack()">&#8592; Back</button>
+      <h1>{{ title }}</h1>
+    </div>
+
+    <div class="card">
+      @if (loading) {
+        <div class="state-box">
+          <span class="spinner"></span>
+          <p>Loading subject...</p>
+        </div>
+      } @else {
+        @if (errorMessage) {
+          <div class="error-banner">{{ errorMessage }}</div>
+        }
+
+        <form [formGroup]="form" (ngSubmit)="onSave()">
+          <div class="field">
+            <label for="subjectName">Subject Name <span class="required">*</span></label>
+            <input
+              id="subjectName"
+              type="text"
+              formControlName="subjectName"
+              placeholder="Enter subject name"
+              [class.invalid]="form.get('subjectName')!.invalid && form.get('subjectName')!.touched"
+            />
+            @if (form.get('subjectName')!.invalid && form.get('subjectName')!.touched) {
+              <span class="field-error">Subject name is required.</span>
+            }
+          </div>
+
+          <div class="field">
+            <label for="subjectDescription">Description</label>
+            <input id="subjectDescription" type="text" formControlName="subjectDescription" placeholder="Enter description" />
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="dob">Date</label>
+              <input id="dob" type="date" formControlName="dob" />
+            </div>
+
+            <div class="field">
+              <label for="course_ID">Course <span class="required">*</span></label>
+              <select
+                id="course_ID"
+                formControlName="course_ID"
+                (change)="onCourseChange($event)"
+                [class.invalid]="form.get('course_ID')!.invalid && form.get('course_ID')!.touched"
+              >
+                <option value="">— Select a course —</option>
+                @for (course of courses; track course.id) {
+                  <option [value]="course.id">{{ course.name }}</option>
+                }
+              </select>
+              @if (form.get('course_ID')!.invalid && form.get('course_ID')!.touched) {
+                <span class="field-error">Course is required.</span>
+              }
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="btn-primary" [disabled]="saving || deleting">
+              {{ saving ? 'Saving…' : 'Save' }}
+            </button>
+
+            @if (isEditMode) {
+              <button type="button" class="btn-danger" (click)="onDelete()" [disabled]="saving || deleting">
+                {{ deleting ? 'Deleting…' : 'Delete' }}
+              </button>
+            }
+
+            <button type="button" class="btn-secondary" (click)="goBack()" [disabled]="saving || deleting">
+              Cancel
+            </button>
+          </div>
+        </form>
+      }
+    </div>
+  </div>
+</div>
