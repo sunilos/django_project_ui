@@ -12,7 +12,7 @@ import { BaseService } from '../services/base.service';
  *   - `onSave()` dispatches to `add` or `update` via `getService()`
  *   - `onDelete()` calls `delete` via `getService()`
  *
- * Child classes must implement the five abstract members and may override
+ * Child classes must implement the six abstract members and may override
  * `loadDropdowns()` to pre-load any FK dropdown data before the form opens.
  */
 @Directive()
@@ -42,8 +42,18 @@ export abstract class BaseComponent implements OnInit {
   /** Page heading shown in the template; returns 'Add …' or 'Edit …'. */
   abstract get title(): string;
 
-  /** The reactive form for this entity; used by `onSave()` to validate and read values. */
-  abstract form: FormGroup;
+  /**
+   * The reactive form for this entity; used by `onSave()` to validate and read values.
+   * Assigned in each child constructor via `this.form = this.buildForm()`.
+   */
+  form!: FormGroup;
+
+  /**
+   * Constructs and returns the `FormGroup` for this entity.
+   * Called in the child constructor: `this.form = this.buildForm()`.
+   * Define all controls and validators here.
+   */
+  protected abstract buildForm(): FormGroup;
 
   /**
    * Returns the service instance responsible for CRUD operations on this entity.

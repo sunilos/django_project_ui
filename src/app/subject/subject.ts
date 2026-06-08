@@ -17,7 +17,6 @@ export class SubjectComponent extends BaseComponent {
   protected override listUrl = '/subjects';
   override get title(): string { return this.isEditMode ? 'Edit Subject' : 'Add Subject'; }
 
-  form: FormGroup;
   courses: Course[] = [];
 
   constructor(
@@ -28,7 +27,11 @@ export class SubjectComponent extends BaseComponent {
     route: ActivatedRoute
   ) {
     super(router, route);
-    this.form = this.fb.group({
+    this.form = this.buildForm();
+  }
+
+  protected override buildForm(): FormGroup {
+    return this.fb.group({
       subjectName: ['', Validators.required],
       subjectDescription: [''],
       dob: [''],

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StudentService, Student } from '../services/student.service';
-import { CollegeService, College } from '../services/college.service';
+import { College } from '../services/college.service';
 import { BaseComponent } from '../base/base.component';
 
 @Component({
@@ -15,20 +15,23 @@ import { BaseComponent } from '../base/base.component';
 export class StudentComponent extends BaseComponent {
 
   protected override listUrl = '/students';
+  preloadData: any;
   override get title(): string { return this.isEditMode ? 'Edit Student' : 'Add Student'; }
 
-  form: FormGroup;
   colleges: College[] = [];
 
   constructor(
     private fb: FormBuilder,
     private studentService: StudentService,
-    private collegeService: CollegeService,
     router: Router,
     route: ActivatedRoute
   ) {
     super(router, route);
-    this.form = this.fb.group({
+    this.form = this.buildForm();
+  }
+
+  protected override buildForm(): FormGroup {
+    return this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       dob: [''],
@@ -40,7 +43,9 @@ export class StudentComponent extends BaseComponent {
   }
 
   protected override loadDropdowns(): void {
-    this.collegeService.get((r: any) => { this.colleges = r.data ?? []; }, () => {});
+    this.getService().preload((r: any) => {
+      this.preloadData = r.data
+    }, () => { });
   }
 
   protected override populateForm(s: any): void {

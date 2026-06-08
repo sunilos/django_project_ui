@@ -5,6 +5,7 @@ import { ServiceLocator } from './service-locator';
 export class BaseService {
 
   protected url: string = '';
+  protected supportsPreload = false;
 
   constructor(protected serviceLocator: ServiceLocator) {}
 
@@ -26,5 +27,10 @@ export class BaseService {
 
   delete<T>(id: number, onSuccess: (data: T) => void, onError: (error: any) => void): void {
     this.serviceLocator.http.delete<T>(`${this.url}${id}/`, onSuccess, onError);
+  }
+
+  preload<T>(onSuccess: (data: T) => void, onError: (error: any) => void): void {
+    if (!this.supportsPreload) return;
+    this.serviceLocator.http.get<T>(`${this.url}preload`, onSuccess, onError);
   }
 }

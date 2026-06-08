@@ -16,8 +16,6 @@ export class RoleComponent extends BaseComponent {
   protected override listUrl = '/roles';
   override get title(): string { return this.isEditMode ? 'Edit Role' : 'Add Role'; }
 
-  form: FormGroup;
-
   constructor(
     private fb: FormBuilder,
     private roleService: RoleService,
@@ -25,7 +23,11 @@ export class RoleComponent extends BaseComponent {
     route: ActivatedRoute
   ) {
     super(router, route);
-    this.form = this.fb.group({
+    this.form = this.buildForm();
+  }
+
+  protected override buildForm(): FormGroup {
+    return this.fb.group({
       name: ['', Validators.required],
       description: ['']
     });

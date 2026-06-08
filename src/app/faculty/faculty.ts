@@ -19,7 +19,6 @@ export class FacultyComponent extends BaseComponent {
   protected override listUrl = '/faculty';
   override get title(): string { return this.isEditMode ? 'Edit Faculty' : 'Add Faculty'; }
 
-  form: FormGroup;
   colleges: College[] = [];
   courses: Course[] = [];
   subjects: Subject[] = [];
@@ -35,7 +34,11 @@ export class FacultyComponent extends BaseComponent {
     route: ActivatedRoute
   ) {
     super(router, route);
-    this.form = this.fb.group({
+    this.form = this.buildForm();
+  }
+
+  protected override buildForm(): FormGroup {
+    return this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],

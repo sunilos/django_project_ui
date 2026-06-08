@@ -16,8 +16,6 @@ export class CourseComponent extends BaseComponent {
   protected override listUrl = '/courses';
   override get title(): string { return this.isEditMode ? 'Edit Course' : 'Add Course'; }
 
-  form: FormGroup;
-
   constructor(
     private fb: FormBuilder,
     private courseService: CourseService,
@@ -25,7 +23,11 @@ export class CourseComponent extends BaseComponent {
     route: ActivatedRoute
   ) {
     super(router, route);
-    this.form = this.fb.group({
+    this.form = this.buildForm();
+  }
+
+  protected override buildForm(): FormGroup {
+    return this.fb.group({
       name: ['', Validators.required],
       description: [''],
       duration: ['']
