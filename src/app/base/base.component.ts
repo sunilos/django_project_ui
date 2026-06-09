@@ -1,4 +1,4 @@
-import { Directive, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Directive, OnInit, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseService } from '../services/base.service';
@@ -32,6 +32,9 @@ export abstract class BaseComponent implements OnInit {
 
   /** Holds the error message shown in the form when an API call fails. */
   errorMessage = '';
+
+  /** Holds the raw response from the preload API; available to child components. */
+  preloadData: any;
 
   /** The numeric ID parsed from the route parameter, or `null` in add-mode. */
   entityId: number | null = null;
@@ -74,10 +77,12 @@ export abstract class BaseComponent implements OnInit {
    */
   protected abstract populateForm(data: any): void;
 
+  private readonly cdr = inject(ChangeDetectorRef);
+
   constructor(
     protected router: Router,
     protected route: ActivatedRoute
-  ) {}
+  ) { }
 
   /**
    * Angular lifecycle hook. Runs `loadDropdowns()` first so FK selects are
@@ -93,7 +98,13 @@ export abstract class BaseComponent implements OnInit {
    * (e.g. college list for Student, course list for Subject).
    * Called before `loadEntity()` so the selects are ready when the form is patched.
    */
-  protected loadDropdowns(): void {}
+  protected loadDropdowns(): void {
+    // alert('calling  base loadDropdowns');
+    this.getService().preload((r: any) => {
+      this.preloadData = r.data;
+      this.cdr.markForCheck();
+    }, () => { });
+  }
 
   /**
    * Initialises edit-mode and populates the form.

@@ -3,9 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FacultyService, Faculty } from '../services/faculty.service';
-import { CollegeService, College } from '../services/college.service';
-import { CourseService, Course } from '../services/course.service';
-import { SubjectService, Subject } from '../services/subject.service';
 import { BaseComponent } from '../base/base.component';
 
 @Component({
@@ -19,17 +16,11 @@ export class FacultyComponent extends BaseComponent {
   protected override listUrl = '/faculty';
   override get title(): string { return this.isEditMode ? 'Edit Faculty' : 'Add Faculty'; }
 
-  colleges: College[] = [];
-  courses: Course[] = [];
-  subjects: Subject[] = [];
   readonly genderOptions = ['Male', 'Female', 'Other'];
 
   constructor(
     private fb: FormBuilder,
     private facultyService: FacultyService,
-    private collegeService: CollegeService,
-    private courseService: CourseService,
-    private subjectService: SubjectService,
     router: Router,
     route: ActivatedRoute
   ) {
@@ -55,11 +46,6 @@ export class FacultyComponent extends BaseComponent {
     });
   }
 
-  protected override loadDropdowns(): void {
-    this.collegeService.get((r: any) => { this.colleges = r.data ?? []; }, () => {});
-    this.courseService.get((r: any) => { this.courses = r.data ?? []; }, () => {});
-    this.subjectService.get((r: any) => { this.subjects = r.data ?? []; }, () => {});
-  }
 
   protected override populateForm(f: any): void {
     this.form.patchValue({
@@ -74,19 +60,25 @@ export class FacultyComponent extends BaseComponent {
 
   onCollegeChange(event: Event): void {
     const id = +(event.target as HTMLSelectElement).value;
-    this.form.patchValue({ collegeName: this.colleges.find(c => c.id === id)?.name ?? '' });
+    const college = this.preloadData?.colleges?.find((c: any) => c.id === id);
+    this.form.patchValue({ collegeName: college?.value ?? '' });
   }
 
   onCourseChange(event: Event): void {
     const id = +(event.target as HTMLSelectElement).value;
-    this.form.patchValue({ courseName: this.courses.find(c => c.id === id)?.name ?? '' });
+    const course = this.preloadData?.courses?.find((c: any) => c.id === id);
+    this.form.patchValue({ courseName: course?.value ?? '' });
   }
 
   onSubjectChange(event: Event): void {
     const id = +(event.target as HTMLSelectElement).value;
-    this.form.patchValue({ subjectName: this.subjects.find(s => s.id === id)?.subjectName ?? '' });
+    const subject = this.preloadData?.subjects?.find((s: any) => s.id === id);
+    this.form.patchValue({ subjectName: subject?.value ?? '' });
   }
 
-  protected override getBody(): Faculty { return { id: this.entityId ?? 0, ...this.form.value }; }
+  protected override getBody(): Faculty {
+    const v = this.form.value;
+    return { id: this.entityId ?? 0, ...v, dob: v.dob || null };
+  }
   protected override getService() { return this.facultyService; }
 }

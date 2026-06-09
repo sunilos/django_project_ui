@@ -51,8 +51,8 @@
                 [class.invalid]="form.get('course_ID')!.invalid && form.get('course_ID')!.touched"
               >
                 <option value="">— Select a course —</option>
-                @for (course of courses; track course.id) {
-                  <option [value]="course.id">{{ course.name }}</option>
+                @for (course of preloadData.courses; track course.id) {
+                  <option [value]="course.id">{{ course.value }}</option>
                 }
               </select>
               @if (form.get('course_ID')!.invalid && form.get('course_ID')!.touched) {

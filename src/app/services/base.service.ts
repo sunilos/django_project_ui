@@ -5,9 +5,9 @@ import { ServiceLocator } from './service-locator';
 export class BaseService {
 
   protected url: string = '';
-  protected supportsPreload = false;
+  protected supportsPreload = true;
 
-  constructor(protected serviceLocator: ServiceLocator) {}
+  constructor(protected serviceLocator: ServiceLocator) { }
 
   get<T>(onSuccess: (data: T) => void, onError: (error: any) => void): void {
     this.serviceLocator.http.get<T>(this.url, onSuccess, onError);

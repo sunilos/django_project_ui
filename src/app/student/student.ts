@@ -15,7 +15,6 @@ import { BaseComponent } from '../base/base.component';
 export class StudentComponent extends BaseComponent {
 
   protected override listUrl = '/students';
-  preloadData: any;
   override get title(): string { return this.isEditMode ? 'Edit Student' : 'Add Student'; }
 
   colleges: College[] = [];
@@ -40,12 +39,6 @@ export class StudentComponent extends BaseComponent {
       college_ID: ['', Validators.required],
       collegeName: ['']
     });
-  }
-
-  protected override loadDropdowns(): void {
-    this.getService().preload((r: any) => {
-      this.preloadData = r.data
-    }, () => { });
   }
 
   protected override populateForm(s: any): void {

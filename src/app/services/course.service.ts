@@ -17,5 +17,6 @@ export class CourseService extends BaseService {
   constructor(serviceLocator: ServiceLocator) {
     super(serviceLocator);
     this.url = ORSAPI.COURSE_API;
+    this.supportsPreload = false;
   }
 }

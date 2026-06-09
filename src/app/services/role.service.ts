@@ -16,5 +16,6 @@ export class RoleService extends BaseService {
   constructor(serviceLocator: ServiceLocator) {
     super(serviceLocator);
     this.url = ORSAPI.ROLE_API;
+    this.supportsPreload = false;
   }
 }
