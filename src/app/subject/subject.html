@@ -62,18 +62,18 @@
           </div>
 
           <div class="actions">
-            <button type="submit" class="btn-primary" [disabled]="saving || deleting">
-              {{ saving ? 'Saving…' : 'Save' }}
+            <button type="submit" class="btn btn-success" [disabled]="saving || deleting">
+              <i class="bi bi-floppy"></i> {{ saving ? 'Saving…' : 'Save' }}
             </button>
 
             @if (isEditMode) {
-              <button type="button" class="btn-danger" (click)="onDelete()" [disabled]="saving || deleting">
-                {{ deleting ? 'Deleting…' : 'Delete' }}
+              <button type="button" class="btn btn-danger" (click)="onDelete()" [disabled]="saving || deleting">
+                <i class="bi bi-trash"></i> {{ deleting ? 'Deleting…' : 'Delete' }}
               </button>
             }
 
-            <button type="button" class="btn-secondary" (click)="goBack()" [disabled]="saving || deleting">
-              Cancel
+            <button type="button" class="btn btn-secondary" (click)="goBack()" [disabled]="saving || deleting">
+              <i class="bi bi-x-circle"></i> Cancel
             </button>
           </div>
         </form>

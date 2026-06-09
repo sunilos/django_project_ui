@@ -6,7 +6,6 @@
       <button class="btn-add" (click)="forward('/role/new')">+ Add Role</button>
     </div>
 
-
     @if (loading) {
       <div class="state-box">
         <span class="spinner"></span>
@@ -26,14 +25,16 @@
               <th>#</th>
               <th>Name</th>
               <th>Description</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             @for (role of formData.listdata; track role.id) {
-              <tr class="row-link" (click)="editRole(role)">
-                <td class="cell-id">{{ role.id }}</td>
+              <tr>
+                <td class="cell-id">{{ $index + 1 }}</td>
                 <td class="cell-name">{{ role.name }}</td>
                 <td class="cell-desc">{{ role.description || '—' }}</td>
+                <td class="cell-action"><button class="btn btn-sm btn-primary" (click)="edit(role)"><i class="bi bi-pencil-square"></i> Edit</button></td>
               </tr>
             }
           </tbody>

@@ -6,7 +6,6 @@
       <button class="btn-add" (click)="forward('/college/new')">+ Add College</button>
     </div>
 
-
     @if (loading) {
       <div class="state-box">
         <span class="spinner"></span>
@@ -29,17 +28,19 @@
               <th>City</th>
               <th>State</th>
               <th>Phone Number</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             @for (college of formData.listdata; track college.id) {
-              <tr class="row-link" (click)="editCollege(college)">
-                <td class="cell-id">{{ college.id }}</td>
+              <tr>
+                <td class="cell-id">{{ $index + 1 }}</td>
                 <td class="cell-name">{{ college.name }}</td>
-                <td class="cell-text">{{ college['address'] || '—' }}</td>
-                <td class="cell-text">{{ college['city'] || '—' }}</td>
-                <td class="cell-text">{{ college['state'] || '—' }}</td>
-                <td class="cell-phone">{{ college['phoneNumber'] || '—' }}</td>
+                <td class="cell-text">{{ college.address || '—' }}</td>
+                <td class="cell-text">{{ college.city || '—' }}</td>
+                <td class="cell-text">{{ college.state || '—' }}</td>
+                <td class="cell-phone">{{ college.phoneNumber || '—' }}</td>
+                <td class="cell-action"><button class="btn btn-sm btn-primary" (click)="edit(college)"><i class="bi bi-pencil-square"></i> Edit</button></td>
               </tr>
             }
           </tbody>

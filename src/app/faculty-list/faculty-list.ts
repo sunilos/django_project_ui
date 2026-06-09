@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FacultyService } from '../services/faculty.service';
 import { BaseListComponent } from '../base/base-list.component';
+import type { BaseService } from '../services/base.service';
 
 @Component({
   selector: 'app-faculty-list',
@@ -10,25 +11,12 @@ import { BaseListComponent } from '../base/base-list.component';
   templateUrl: './faculty-list.html',
   styleUrl: './faculty-list.css'
 })
-export class FacultyListComponent extends BaseListComponent implements OnInit {
+export class FacultyListComponent extends BaseListComponent {
 
+  protected override pageUrl = '/faculty';
   constructor(private facultyService: FacultyService, router: Router, cdr: ChangeDetectorRef) {
     super(router, cdr);
   }
 
-  editFaculty(faculty: any): void {
-    this.router.navigate(['/faculty', faculty.id], { state: faculty });
-  }
-
-  ngOnInit(): void {
-    this.facultyService.get(
-      (response: any) => {
-        this.formData.listdata = response.data;
-        this.formData.error = response.error;
-        this.formData.message = response.message;
-        this.refresh();
-      },
-      (err: any) => console.error('Faculty fetch failed:', err)
-    );
-  }
+  protected override getService(): BaseService { return this.facultyService; }
 }

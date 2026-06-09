@@ -26,15 +26,17 @@
               <th>Name</th>
               <th>Description</th>
               <th>Duration</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             @for (course of formData.listdata; track course.id) {
-              <tr class="row-link" (click)="editCourse(course)">
-                <td class="cell-id">{{ course.id }}</td>
+              <tr>
+                <td class="cell-id">{{ $index + 1 }}</td>
                 <td class="cell-name">{{ course.name }}</td>
                 <td class="cell-desc">{{ course.description || '—' }}</td>
                 <td class="cell-duration">{{ course.duration || '—' }}</td>
+                <td class="cell-action"><button class="btn btn-sm btn-primary" (click)="edit(course)"><i class="bi bi-pencil-square"></i> Edit</button></td>
               </tr>
             }
           </tbody>

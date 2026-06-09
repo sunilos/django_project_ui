@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CollegeService } from '../services/college.service';
 import { BaseListComponent } from '../base/base-list.component';
+import type { BaseService } from '../services/base.service';
 
 @Component({
   selector: 'app-college-list',
@@ -10,27 +11,13 @@ import { BaseListComponent } from '../base/base-list.component';
   templateUrl: './college-list.html',
   styleUrl: './college-list.css'
 })
-export class CollegeListComponent extends BaseListComponent implements OnInit {
+export class CollegeListComponent extends BaseListComponent {
+
+  protected override pageUrl = '/college';
 
   constructor(private collegeService: CollegeService, router: Router, cdr: ChangeDetectorRef) {
     super(router, cdr);
   }
 
-  editCollege(college: any): void {
-    this.router.navigate(['/college', college.id], { state: college });
-  }
-
-  ngOnInit(): void {
-    let _self = this;
-    this.collegeService.get(
-      (response: any) => {
-        _self.formData.listdata = response.data;
-        _self.formData.error = response.error;
-        _self.formData.message = response.message;
-        console.log('College response:', response);
-        _self.refresh();
-      },
-      (err: any) => console.error('College failed:', err)
-    );
-  }
+  protected override getService(): BaseService { return this.collegeService; }
 }

@@ -29,18 +29,20 @@
               <th>College</th>
               <th>Course</th>
               <th>Subject</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             @for (faculty of formData.listdata; track faculty.id) {
-              <tr class="row-link" (click)="editFaculty(faculty)">
-                <td class="cell-id">{{ faculty.id }}</td>
+              <tr>
+                <td class="cell-id">{{ $index + 1 }}</td>
                 <td class="cell-name">{{ faculty.firstName }} {{ faculty.lastName }}</td>
                 <td class="cell-text">{{ faculty.email }}</td>
                 <td class="cell-text">{{ faculty.mobileNumber || '—' }}</td>
                 <td class="cell-text">{{ faculty.collegeName || '—' }}</td>
                 <td class="cell-text">{{ faculty.courseName || '—' }}</td>
                 <td class="cell-text">{{ faculty.subjectName || '—' }}</td>
+                <td class="cell-action"><button class="btn btn-sm btn-primary" (click)="edit(faculty)"><i class="bi bi-pencil-square"></i> Edit</button></td>
               </tr>
             }
           </tbody>

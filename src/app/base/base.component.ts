@@ -118,11 +118,21 @@ export abstract class BaseComponent implements OnInit {
     if (state?.['id']) {
       this.populateForm(state);
     } else {
+
       this.loading = true;
+
       this.getService().getById(
         this.entityId!,
-        (data) => { this.loading = false; this.populateForm(data); },
-        (err) => { this.loading = false; this.errorMessage = err?.error?.message || 'Failed to load.'; }
+        (data) => {
+          this.loading = false;
+          this.populateForm(data);
+          this.cdr.markForCheck();
+        },
+        (err) => {
+          this.loading = false;
+          this.errorMessage = err?.status === 0 ? 'Server Error' : err?.error?.message || 'Failed to load.';
+          this.cdr.markForCheck();
+        }
       );
     }
   }
@@ -180,7 +190,8 @@ export abstract class BaseComponent implements OnInit {
    */
   protected handleSaveError(err: any): void {
     this.saving = false;
-    this.errorMessage = err?.error?.message || 'Save failed. Please try again.';
+    this.errorMessage = err?.status === 0 ? 'Server Error' : (err?.error?.message || 'Save failed. Please try again.');
+    this.cdr.markForCheck();
   }
 
   /**
@@ -189,6 +200,7 @@ export abstract class BaseComponent implements OnInit {
    */
   protected handleDeleteError(err: any): void {
     this.deleting = false;
-    this.errorMessage = err?.error?.message || 'Delete failed. Please try again.';
+    this.errorMessage = err?.status === 0 ? 'Server Error' : (err?.error?.message || 'Delete failed. Please try again.');
+    this.cdr.markForCheck();
   }
 }
