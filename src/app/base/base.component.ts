@@ -151,6 +151,7 @@ export abstract class BaseComponent implements OnInit {
    * On success navigates to the list. On failure calls `handleSaveError`.
    */
   onSave(): void {
+    this.form.markAllAsTouched();
     if (this.form.invalid || this.saving) return;
     this.saving = true;
     this.errorMessage = '';

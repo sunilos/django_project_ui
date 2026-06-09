@@ -55,6 +55,9 @@ export class StudentComponent extends BaseComponent {
     this.form.patchValue({ collegeName: college?.name ?? '' });
   }
 
-  protected override getBody(): Student { return { id: this.entityId ?? 0, ...this.form.value }; }
+  protected override getBody(): Student {
+    const v = this.form.value;
+    return { id: this.entityId ?? 0, ...v, dob: v.dob || null };
+  }
   protected override getService() { return this.studentService; }
 }
