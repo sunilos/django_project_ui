@@ -29,17 +29,26 @@
             @if (form.get('subjectName')!.invalid && form.get('subjectName')!.touched) {
               <span class="field-error">Subject name is required.</span>
             }
+            @if (errors['subjectName']) {
+              <span class="field-error">{{ errors['subjectName'] }}</span>
+            }
           </div>
 
           <div class="field">
             <label for="subjectDescription">Description</label>
             <input id="subjectDescription" type="text" formControlName="subjectDescription" placeholder="Enter description" />
+            @if (errors['subjectDescription']) {
+              <span class="field-error">{{ errors['subjectDescription'] }}</span>
+            }
           </div>
 
           <div class="row">
             <div class="field">
               <label for="dob">Date</label>
               <input id="dob" type="date" formControlName="dob" />
+              @if (errors['dob']) {
+                <span class="field-error">{{ errors['dob'] }}</span>
+              }
             </div>
 
             <div class="field">
@@ -57,6 +66,9 @@
               </select>
               @if (form.get('course_ID')!.invalid && form.get('course_ID')!.touched) {
                 <span class="field-error">Course is required.</span>
+              }
+              @if (errors['course_ID']) {
+                <span class="field-error">{{ errors['course_ID'] }}</span>
               }
             </div>
           </div>

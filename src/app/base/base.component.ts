@@ -33,6 +33,8 @@ export abstract class BaseComponent implements OnInit {
   /** Holds the error message shown in the form when an API call fails. */
   errorMessage = '';
 
+  errors: Record<string, string> = {};
+
   /** Holds the raw response from the preload API; available to child components. */
   preloadData: any;
 
@@ -167,7 +169,10 @@ export abstract class BaseComponent implements OnInit {
     this.errorMessage = '';
     const body = this.getBody();
     if (this.isEditMode && this.entityId) {
-      this.getService().update(this.entityId, body, () => this.goBack(), (err) => this.handleSaveError(err));
+      this.getService().update(this.entityId, body,
+        () => this.goBack(),
+        (err) => this.handleSaveError(err)
+      );
     } else {
       this.getService().add(body, () => this.goBack(), (err) => this.handleSaveError(err));
     }
@@ -191,6 +196,7 @@ export abstract class BaseComponent implements OnInit {
   protected handleSaveError(err: any): void {
     this.saving = false;
     this.errorMessage = err?.status === 0 ? 'Server Error' : (err?.error?.message || 'Save failed. Please try again.');
+    this.errors =  (err?.error?.errors || {});
     this.cdr.markForCheck();
   }
 

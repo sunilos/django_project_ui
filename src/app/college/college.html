@@ -29,28 +29,43 @@
             @if (form.get('name')!.invalid && form.get('name')!.touched) {
               <span class="field-error">Name is required.</span>
             }
+            @if (errors['name']) {
+              <span class="field-error">{{ errors['name'] }}</span>
+            }
           </div>
 
           <div class="field">
             <label for="address">Address</label>
             <input id="address" type="text" formControlName="address" placeholder="Enter address" />
+            @if (errors['address']) {
+              <span class="field-error">{{ errors['address'] }}</span>
+            }
           </div>
 
           <div class="row">
             <div class="field">
               <label for="city">City</label>
               <input id="city" type="text" formControlName="city" placeholder="Enter city" />
+              @if (errors['city']) {
+                <span class="field-error">{{ errors['city'] }}</span>
+              }
             </div>
 
             <div class="field">
               <label for="state">State</label>
               <input id="state" type="text" formControlName="state" placeholder="Enter state" />
+              @if (errors['state']) {
+                <span class="field-error">{{ errors['state'] }}</span>
+              }
             </div>
           </div>
 
           <div class="field">
             <label for="phoneNumber">Phone Number</label>
             <input id="phoneNumber" type="tel" formControlName="phoneNumber" placeholder="Enter phone number" />
+            @if (errors['phoneNumber']) {
+              <span class="field-error">{{ errors['phoneNumber'] }}</span>
+            }
           </div>
 
           <div class="actions">

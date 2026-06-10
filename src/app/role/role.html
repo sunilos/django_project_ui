@@ -23,6 +23,9 @@
           @if (form.get('name')!.invalid && form.get('name')!.touched) {
             <span class="field-error">Name is required.</span>
           }
+          @if (errors['name']) {
+            <span class="field-error">{{ errors['name'] }}</span>
+          }
         </div>
 
         <div class="field">
@@ -33,6 +36,9 @@
             rows="3"
             placeholder="Enter role description (optional)"
           ></textarea>
+          @if (errors['description']) {
+            <span class="field-error">{{ errors['description'] }}</span>
+          }
         </div>
 
         <div class="actions">
