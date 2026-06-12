@@ -11,13 +11,19 @@
         <span class="spinner"></span>
         <p>Loading courses...</p>
       </div>
-    } @else if (formData.error) {
-      <div class="error-banner">{{ formData.message }}</div>
-    } @else if (formData.listdata.length === 0) {
+    } @else if (searchForm.error) {
+      <div class="error-banner">{{ searchForm.message }}</div>
+    } @else if (searchForm.listdata.length === 0) {
       <div class="state-box">
         <p>No courses found.</p>
       </div>
     } @else {
+      <form [formGroup]="form" class="d-flex align-items-center gap-2 mb-3" (ngSubmit)="doSearch()">
+        <input type="text" formControlName="name" placeholder="Name" class="form-control" />
+        <input type="text" formControlName="description" placeholder="Description" class="form-control" />
+        <input type="text" formControlName="duration" placeholder="Duration" class="form-control" />
+        <button type="submit" class="btn btn-primary">Search</button>
+      </form>
       <div class="table-wrapper">
         <table>
           <thead>
@@ -30,7 +36,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (course of formData.listdata; track course.id) {
+            @for (course of searchForm.listdata; track course.id) {
               <tr>
                 <td class="cell-id">{{ $index + 1 }}</td>
                 <td class="cell-name">{{ course.name }}</td>
@@ -41,7 +47,7 @@
             }
           </tbody>
         </table>
-        <p class="count">{{ formData.listdata.length }} course{{ formData.listdata.length !== 1 ? 's' : '' }}</p>
+        <p class="count">{{ searchForm.listdata.length }} course{{ searchForm.listdata.length !== 1 ? 's' : '' }}</p>
       </div>
     }
   </div>

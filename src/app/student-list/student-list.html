@@ -11,13 +11,20 @@
         <span class="spinner"></span>
         <p>Loading students...</p>
       </div>
-    } @else if (formData.error) {
-      <div class="error-banner">{{ formData.message }}</div>
-    } @else if (formData.listdata.length === 0) {
+    } @else if (searchForm.error) {
+      <div class="error-banner">{{ searchForm.message }}</div>
+    } @else if (searchForm.listdata.length === 0) {
       <div class="state-box">
         <p>No students found.</p>
       </div>
     } @else {
+      <form [formGroup]="form" class="d-flex align-items-center gap-2 mb-3" (ngSubmit)="doSearch()">
+        <input type="text" formControlName="firstName" placeholder="First name" class="form-control" />
+        <input type="text" formControlName="lastName" placeholder="Last name" class="form-control" />
+        <input type="email" formControlName="email" placeholder="Email" class="form-control" />
+        <input type="text" formControlName="collegeName" placeholder="College" class="form-control" />
+        <button type="submit" class="btn btn-primary">Search</button>
+      </form>
       <div class="table-wrapper">
         <table>
           <thead>
@@ -32,7 +39,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (student of formData.listdata; track student.id) {
+            @for (student of searchForm.listdata; track student.id) {
               <tr>
                 <td class="cell-id">{{ $index + 1 }}</td>
                 <td class="cell-name">{{ student.firstName }} {{ student.lastName }}</td>
@@ -45,7 +52,7 @@
             }
           </tbody>
         </table>
-        <p class="count">{{ formData.listdata.length }} student{{ formData.listdata.length !== 1 ? 's' : '' }}</p>
+        <p class="count">{{ searchForm.listdata.length }} student{{ searchForm.listdata.length !== 1 ? 's' : '' }}</p>
       </div>
     }
   </div>

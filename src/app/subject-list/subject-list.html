@@ -1,50 +1,63 @@
 <div class="page-wrapper">
-  <div class="page-container">
-    <div class="page-header">
-      <button class="btn-back" (click)="goBack()">&#8592; Back</button>
-      <h1>Subjects</h1>
-      <button class="btn-add" (click)="forward('/subject/new')">+ Add Subject</button>
-    </div>
+    <div class="page-container">
+        <div class="page-header">
+            <button class="btn-back" (click)="goBack()">&#8592; Back</button>
+            <h1>Subjects</h1>
+            <button class="btn-add" (click)="forward('/subject/new')">+ Add Subject</button>
+        </div>
 
-    @if (loading) {
-      <div class="state-box">
-        <span class="spinner"></span>
-        <p>Loading subjects...</p>
-      </div>
-    } @else if (formData.error) {
-      <div class="error-banner">{{ formData.message }}</div>
-    } @else if (formData.listdata.length === 0) {
-      <div class="state-box">
-        <p>No subjects found.</p>
-      </div>
-    } @else {
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Subject Name</th>
-              <th>Description</th>
-              <th>Course</th>
-              <th>Date</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (subject of formData.listdata; track subject.id) {
-              <tr>
-                <td class="cell-id">{{ $index + 1 }}</td>
-                <td class="cell-name">{{ subject.subjectName }}</td>
-                <td class="cell-desc">{{ subject.subjectDescription || '—' }}</td>
-                <td class="cell-text">{{ subject.courseName || '—' }}</td>
-                <td class="cell-text">{{ subject.dob || '—' }}</td>
-                <td class="cell-action"><button class="btn btn-sm btn-primary" (click)="edit(subject)"><i class="bi bi-pencil-square"></i> Edit</button></td>
-              </tr>
-            }
-          </tbody>
-        </table>
-        <p class="count">{{ formData.listdata.length }} subject{{ formData.listdata.length !== 1 ? 's' : '' }}</p>
-      </div>
-    }
-  </div>
+        @if (loading) {
+        <div class="state-box">
+            <span class="spinner"></span>
+            <p>Loading subjects...</p>
+        </div>
+        } @else if (searchForm.error) {
+        <div class="error-banner">{{ searchForm.message }}</div>
+        } @else if (searchForm.listdata.length === 0) {
+        <div class="state-box">
+            <p>No subjects found.</p>
+        </div>
+        } @else {
+
+        <form [formGroup]="form" class="d-flex align-items-center gap-2 mb-3" (ngSubmit)="doSearch()">
+            <input type="text" formControlName="subjectName" placeholder="Subject name" class="form-control" />
+            <input type="text" formControlName="subjectDescription" placeholder="Description" class="form-control" />
+            <select formControlName="course_ID" class="form-select">
+                <option value="">All Courses</option>
+                @for (course of preloadData?.courses; track course.id) {
+                <option [value]="course.id">{{ course.value }}</option>
+                }
+            </select>
+            <input type="date" formControlName="dob" class="form-control" />
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Subject Name</th>
+                        <th>Description</th>
+                        <th>Course</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (subject of searchForm.listdata; track subject.id) {
+                    <tr>
+                        <td class="cell-id">{{ $index + 1 }}</td>
+                        <td class="cell-name">{{ subject.subjectName }}</td>
+                        <td class="cell-desc">{{ subject.subjectDescription || '—' }}</td>
+                        <td class="cell-text">{{ subject.courseName || '—' }}</td>
+                        <td class="cell-text">{{ subject.dob || '—' }}</td>
+                        <td class="cell-action"><button class="btn btn-sm btn-primary" (click)="edit(subject)"><i class="bi bi-pencil-square"></i> Edit</button></td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+            <p class="count">{{ searchForm.listdata.length }} subject{{ searchForm.listdata.length !== 1 ? 's' : '' }}</p>
+        </div>
+        }
+    </div>
 </div>

@@ -11,13 +11,18 @@
         <span class="spinner"></span>
         <p>Loading roles...</p>
       </div>
-    } @else if (formData.error) {
-      <div class="error-banner">{{ formData.message }}</div>
-    } @else if (formData.listdata.length === 0) {
+    } @else if (searchForm.error) {
+      <div class="error-banner">{{ searchForm.message }}</div>
+    } @else if (searchForm.listdata.length === 0) {
       <div class="state-box">
         <p>No roles found.</p>
       </div>
     } @else {
+      <form [formGroup]="form" class="d-flex align-items-center gap-2 mb-3" (ngSubmit)="doSearch()">
+        <input type="text" formControlName="name" placeholder="Name" class="form-control" />
+        <input type="text" formControlName="description" placeholder="Description" class="form-control" />
+        <button type="submit" class="btn btn-primary">Search</button>
+      </form>
       <div class="table-wrapper">
         <table>
           <thead>
@@ -29,7 +34,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (role of formData.listdata; track role.id) {
+            @for (role of searchForm.listdata; track role.id) {
               <tr>
                 <td class="cell-id">{{ $index + 1 }}</td>
                 <td class="cell-name">{{ role.name }}</td>
@@ -39,7 +44,7 @@
             }
           </tbody>
         </table>
-        <p class="count">{{ formData.listdata.length }} role{{ formData.listdata.length !== 1 ? 's' : '' }}</p>
+        <p class="count">{{ searchForm.listdata.length }} role{{ searchForm.listdata.length !== 1 ? 's' : '' }}</p>
       </div>
     }
   </div>

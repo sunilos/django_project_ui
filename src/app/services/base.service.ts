@@ -5,6 +5,7 @@ import { ServiceLocator } from './service-locator';
 export class BaseService {
 
   protected url: string = '';
+  
   protected supportsPreload = true;
 
   constructor(protected serviceLocator: ServiceLocator) { }
@@ -19,6 +20,10 @@ export class BaseService {
 
   add<T>(body: unknown, onSuccess: (data: T) => void, onError: (error: any) => void): void {
     this.serviceLocator.http.post<T>(this.url, body, onSuccess, onError);
+  }
+
+  search<T>(body: unknown, onSuccess: (data: T) => void, onError: (error: any) => void): void {
+    this.serviceLocator.http.post<T>(`${this.url}search/`, body, onSuccess, onError);
   }
 
   update<T>(id: number, body: unknown, onSuccess: (data: T) => void, onError: (error: any) => void): void {
