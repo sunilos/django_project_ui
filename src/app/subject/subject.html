@@ -1,95 +1,83 @@
-<div class="page-wrapper">
-  <div class="page-container">
-    <div class="page-header">
-      <button class="btn-back" (click)="goBack()">&#8592; Back</button>
-      <h1>{{ title }}</h1>
+<div class="min-vh-100 py-4 px-3 page-bg">
+  <div class="mx-auto" style="max-width: 560px">
+
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <button class="btn btn-outline-light btn-sm" (click)="goBack()">&#8592; Back</button>
+      <h1 class="h4 text-white fw-bold mb-0">{{ title }}</h1>
     </div>
 
-    <div class="card">
-      @if (loading) {
-        <div class="state-box">
-          <span class="spinner"></span>
-          <p>Loading subject...</p>
-        </div>
-      } @else {
-        @if (errorMessage) {
-          <div class="error-banner">{{ errorMessage }}</div>
-        }
+    <div class="card shadow">
+      <div class="card-body p-4">
 
-        <form [formGroup]="form" (ngSubmit)="onSave()">
-          <div class="field">
-            <label for="subjectName">Subject Name <span class="required">*</span></label>
-            <input
-              id="subjectName"
-              type="text"
-              formControlName="subjectName"
-              placeholder="Enter subject name"
-              [class.invalid]="form.get('subjectName')!.invalid && form.get('subjectName')!.touched"
-            />
-            @if (form.get('subjectName')!.invalid && form.get('subjectName')!.touched) {
-              <span class="field-error">Subject name is required.</span>
-            }
-            @if (errors['subjectName']) {
-              <span class="field-error">{{ errors['subjectName'] }}</span>
-            }
+        @if (loading) {
+          <div class="text-center py-4 text-secondary">
+            <div class="spinner-border mb-3" style="color: #0f3460" role="status"></div>
+            <p class="mb-0">Loading subject...</p>
           </div>
+        } @else {
 
-          <div class="field">
-            <label for="subjectDescription">Description</label>
-            <input id="subjectDescription" type="text" formControlName="subjectDescription" placeholder="Enter description" />
-            @if (errors['subjectDescription']) {
-              <span class="field-error">{{ errors['subjectDescription'] }}</span>
-            }
-          </div>
+          @if (errorMessage) {
+            <div class="alert alert-danger">{{ errorMessage }}</div>
+          }
 
-          <div class="row">
-            <div class="field">
-              <label for="dob">Date</label>
-              <input id="dob" type="date" formControlName="dob" />
-              @if (errors['dob']) {
-                <span class="field-error">{{ errors['dob'] }}</span>
+          <form [formGroup]="form" (ngSubmit)="onSave()">
+
+            <div class="mb-3">
+              <label for="subjectName" class="form-label fw-semibold">Subject Name <span class="text-danger">*</span></label>
+              <input id="subjectName" type="text" formControlName="subjectName" placeholder="Enter subject name"
+                class="form-control" [class.is-invalid]="form.get('subjectName')!.invalid && form.get('subjectName')!.touched" />
+              @if (form.get('subjectName')!.invalid && form.get('subjectName')!.touched) {
+                <div class="invalid-feedback">Subject name is required.</div>
               }
+              @if (errors['subjectName']) { <div class="text-danger small mt-1">{{ errors['subjectName'] }}</div> }
             </div>
 
-            <div class="field">
-              <label for="course_ID">Course <span class="required">*</span></label>
-              <select
-                id="course_ID"
-                formControlName="course_ID"
-                (change)="onCourseChange($event)"
-                [class.invalid]="form.get('course_ID')!.invalid && form.get('course_ID')!.touched"
-              >
-                <option value="">— Select a course —</option>
-                @for (course of preloadData.courses; track course.id) {
-                  <option [value]="course.id">{{ course.value }}</option>
+            <div class="mb-3">
+              <label for="subjectDescription" class="form-label fw-semibold">Description</label>
+              <input id="subjectDescription" type="text" formControlName="subjectDescription" placeholder="Enter description" class="form-control" />
+              @if (errors['subjectDescription']) { <div class="text-danger small mt-1">{{ errors['subjectDescription'] }}</div> }
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col">
+                <label for="dob" class="form-label fw-semibold">Date</label>
+                <input id="dob" type="date" formControlName="dob" class="form-control" />
+                @if (errors['dob']) { <div class="text-danger small mt-1">{{ errors['dob'] }}</div> }
+              </div>
+              <div class="col">
+                <label for="course_ID" class="form-label fw-semibold">Course <span class="text-danger">*</span></label>
+                <select id="course_ID" formControlName="course_ID" (change)="onCourseChange($event)" class="form-select"
+                  [class.is-invalid]="form.get('course_ID')!.invalid && form.get('course_ID')!.touched">
+                  <option value="">— Select a course —</option>
+                  @for (course of preloadData?.courses; track course.id) {
+                    <option [value]="course.id">{{ course.value }}</option>
+                  }
+                </select>
+                @if (form.get('course_ID')!.invalid && form.get('course_ID')!.touched) {
+                  <div class="invalid-feedback">Course is required.</div>
                 }
-              </select>
-              @if (form.get('course_ID')!.invalid && form.get('course_ID')!.touched) {
-                <span class="field-error">Course is required.</span>
-              }
-              @if (errors['course_ID']) {
-                <span class="field-error">{{ errors['course_ID'] }}</span>
-              }
+                @if (errors['course_ID']) { <div class="text-danger small mt-1">{{ errors['course_ID'] }}</div> }
+              </div>
             </div>
-          </div>
 
-          <div class="actions">
-            <button type="submit" class="btn btn-success" [disabled]="saving || deleting">
-              <i class="bi bi-floppy"></i> {{ saving ? 'Saving…' : 'Save' }}
-            </button>
-
-            @if (isEditMode) {
-              <button type="button" class="btn btn-danger" (click)="onDelete()" [disabled]="saving || deleting">
-                <i class="bi bi-trash"></i> {{ deleting ? 'Deleting…' : 'Delete' }}
+            <div class="d-flex gap-2 mt-4">
+              <button type="submit" class="btn btn-success" [disabled]="saving || deleting">
+                <i class="bi bi-floppy"></i> {{ saving ? 'Saving…' : 'Save' }}
               </button>
-            }
+              @if (isEditMode) {
+                <button type="button" class="btn btn-danger" (click)="onDelete()" [disabled]="saving || deleting">
+                  <i class="bi bi-trash"></i> {{ deleting ? 'Deleting…' : 'Delete' }}
+                </button>
+              }
+              <button type="button" class="btn btn-secondary" (click)="goBack()" [disabled]="saving || deleting">
+                <i class="bi bi-x-circle"></i> Cancel
+              </button>
+            </div>
 
-            <button type="button" class="btn btn-secondary" (click)="goBack()" [disabled]="saving || deleting">
-              <i class="bi bi-x-circle"></i> Cancel
-            </button>
-          </div>
-        </form>
-      }
+          </form>
+        }
+      </div>
     </div>
+
   </div>
 </div>

@@ -1,201 +1,165 @@
-<div class="page-wrapper">
-  <div class="page-container">
-    <div class="page-header">
-      <button class="btn-back" (click)="goBack()">&#8592; Back</button>
-      <h1>{{ title }}</h1>
+<div class="min-vh-100 py-4 px-3 page-bg">
+  <div class="mx-auto" style="max-width: 680px">
+
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <button class="btn btn-outline-light btn-sm" (click)="goBack()">&#8592; Back</button>
+      <h1 class="h4 text-white fw-bold mb-0">{{ title }}</h1>
     </div>
 
-    <div class="card">
-      @if (loading) {
-        <div class="state-box">
-          <span class="spinner"></span>
-          <p>Loading faculty...</p>
-        </div>
-      } @else {
-        @if (errorMessage) {
-          <div class="error-banner">{{ errorMessage }}</div>
-        }
+    <div class="card shadow">
+      <div class="card-body p-4">
 
-        <form [formGroup]="form" (ngSubmit)="onSave()">
-
-          <div class="section-title">Personal Info</div>
-
-          <div class="row">
-            <div class="field">
-              <label for="firstName">First Name <span class="required">*</span></label>
-              <input
-                id="firstName"
-                type="text"
-                formControlName="firstName"
-                placeholder="First name"
-                [class.invalid]="form.get('firstName')!.invalid && form.get('firstName')!.touched"
-              />
-              @if (form.get('firstName')!.invalid && form.get('firstName')!.touched) {
-                <span class="field-error">First name is required.</span>
-              }
-              @if (errors['firstName']) {
-                <span class="field-error">{{ errors['firstName'] }}</span>
-              }
-            </div>
-            <div class="field">
-              <label for="lastName">Last Name <span class="required">*</span></label>
-              <input
-                id="lastName"
-                type="text"
-                formControlName="lastName"
-                placeholder="Last name"
-                [class.invalid]="form.get('lastName')!.invalid && form.get('lastName')!.touched"
-              />
-              @if (form.get('lastName')!.invalid && form.get('lastName')!.touched) {
-                <span class="field-error">Last name is required.</span>
-              }
-              @if (errors['lastName']) {
-                <span class="field-error">{{ errors['lastName'] }}</span>
-              }
-            </div>
+        @if (loading) {
+          <div class="text-center py-4 text-secondary">
+            <div class="spinner-border mb-3" style="color: #0f3460" role="status"></div>
+            <p class="mb-0">Loading faculty...</p>
           </div>
+        } @else {
 
-          <div class="row">
-            <div class="field">
-              <label for="email">Email <span class="required">*</span></label>
-              <input
-                id="email"
-                type="email"
-                formControlName="email"
-                placeholder="Email address"
-                [class.invalid]="form.get('email')!.invalid && form.get('email')!.touched"
-              />
-              @if (form.get('email')!.touched) {
-                @if (form.get('email')!.hasError('required')) {
-                  <span class="field-error">Email is required.</span>
-                } @else if (form.get('email')!.hasError('email')) {
-                  <span class="field-error">Enter a valid email address.</span>
+          @if (errorMessage) {
+            <div class="alert alert-danger">{{ errorMessage }}</div>
+          }
+
+          <form [formGroup]="form" (ngSubmit)="onSave()">
+
+            <p class="small fw-bold text-uppercase border-bottom pb-1 mb-3" style="color:#0f3460">Personal Info</p>
+
+            <div class="row g-3 mb-3">
+              <div class="col">
+                <label for="firstName" class="form-label fw-semibold">First Name <span class="text-danger">*</span></label>
+                <input id="firstName" type="text" formControlName="firstName" placeholder="First name"
+                  class="form-control" [class.is-invalid]="form.get('firstName')!.invalid && form.get('firstName')!.touched" />
+                @if (form.get('firstName')!.invalid && form.get('firstName')!.touched) {
+                  <div class="invalid-feedback">First name is required.</div>
                 }
-              }
-              @if (errors['email']) {
-                <span class="field-error">{{ errors['email'] }}</span>
-              }
+                @if (errors['firstName']) { <div class="text-danger small mt-1">{{ errors['firstName'] }}</div> }
+              </div>
+              <div class="col">
+                <label for="lastName" class="form-label fw-semibold">Last Name <span class="text-danger">*</span></label>
+                <input id="lastName" type="text" formControlName="lastName" placeholder="Last name"
+                  class="form-control" [class.is-invalid]="form.get('lastName')!.invalid && form.get('lastName')!.touched" />
+                @if (form.get('lastName')!.invalid && form.get('lastName')!.touched) {
+                  <div class="invalid-feedback">Last name is required.</div>
+                }
+                @if (errors['lastName']) { <div class="text-danger small mt-1">{{ errors['lastName'] }}</div> }
+              </div>
             </div>
-            <div class="field">
-              <label for="mobileNumber">Mobile Number <span class="required">*</span></label>
-              <input
-                id="mobileNumber"
-                type="tel"
-                formControlName="mobileNumber"
-                placeholder="Mobile number"
-                [class.invalid]="form.get('mobileNumber')!.invalid && form.get('mobileNumber')!.touched"
-              />
-              @if (form.get('mobileNumber')!.invalid && form.get('mobileNumber')!.touched) {
-                <span class="field-error">Mobile number is required.</span>
-              }
-              @if (errors['mobileNumber']) {
-                <span class="field-error">{{ errors['mobileNumber'] }}</span>
-              }
+
+            <div class="row g-3 mb-3">
+              <div class="col">
+                <label for="email" class="form-label fw-semibold">Email <span class="text-danger">*</span></label>
+                <input id="email" type="email" formControlName="email" placeholder="Email address"
+                  class="form-control" [class.is-invalid]="form.get('email')!.invalid && form.get('email')!.touched" />
+                @if (form.get('email')!.touched) {
+                  @if (form.get('email')!.hasError('required')) {
+                    <div class="invalid-feedback">Email is required.</div>
+                  } @else if (form.get('email')!.hasError('email')) {
+                    <div class="invalid-feedback">Enter a valid email address.</div>
+                  }
+                }
+                @if (errors['email']) { <div class="text-danger small mt-1">{{ errors['email'] }}</div> }
+              </div>
+              <div class="col">
+                <label for="mobileNumber" class="form-label fw-semibold">Mobile Number <span class="text-danger">*</span></label>
+                <input id="mobileNumber" type="tel" formControlName="mobileNumber" placeholder="Mobile number"
+                  class="form-control" [class.is-invalid]="form.get('mobileNumber')!.invalid && form.get('mobileNumber')!.touched" />
+                @if (form.get('mobileNumber')!.invalid && form.get('mobileNumber')!.touched) {
+                  <div class="invalid-feedback">Mobile number is required.</div>
+                }
+                @if (errors['mobileNumber']) { <div class="text-danger small mt-1">{{ errors['mobileNumber'] }}</div> }
+              </div>
             </div>
-          </div>
 
-          <div class="field">
-            <label for="address">Address</label>
-            <input id="address" type="text" formControlName="address" placeholder="Address" />
-            @if (errors['address']) {
-              <span class="field-error">{{ errors['address'] }}</span>
-            }
-          </div>
+            <div class="mb-3">
+              <label for="address" class="form-label fw-semibold">Address</label>
+              <input id="address" type="text" formControlName="address" placeholder="Address" class="form-control" />
+              @if (errors['address']) { <div class="text-danger small mt-1">{{ errors['address'] }}</div> }
+            </div>
 
-          <div class="row">
-            <div class="field">
-              <label for="gender">Gender</label>
-              <select id="gender" formControlName="gender">
-                <option value="">— Select gender —</option>
-                @for (g of genderOptions; track g) {
-                  <option [value]="g">{{ g }}</option>
+            <div class="row g-3 mb-3">
+              <div class="col">
+                <label for="gender" class="form-label fw-semibold">Gender</label>
+                <select id="gender" formControlName="gender" class="form-select">
+                  <option value="">— Select gender —</option>
+                  @for (g of genderOptions; track g) {
+                    <option [value]="g">{{ g }}</option>
+                  }
+                </select>
+                @if (errors['gender']) { <div class="text-danger small mt-1">{{ errors['gender'] }}</div> }
+              </div>
+              <div class="col">
+                <label for="dob" class="form-label fw-semibold">Date of Birth</label>
+                <input id="dob" type="date" formControlName="dob" class="form-control" />
+                @if (errors['dob']) { <div class="text-danger small mt-1">{{ errors['dob'] }}</div> }
+              </div>
+            </div>
+
+            <p class="small fw-bold text-uppercase border-bottom pb-1 mb-3" style="color:#0f3460">Assignment</p>
+
+            <div class="mb-3">
+              <label for="college_ID" class="form-label fw-semibold">College <span class="text-danger">*</span></label>
+              <select id="college_ID" formControlName="college_ID" class="form-select"
+                [class.is-invalid]="form.get('college_ID')!.invalid && form.get('college_ID')!.touched">
+                <option value="">— Select a college —</option>
+                @for (college of preloadData?.colleges; track college.id) {
+                  <option [value]="college.id">{{ college.value }}</option>
                 }
               </select>
-              @if (errors['gender']) {
-                <span class="field-error">{{ errors['gender'] }}</span>
+              @if (form.get('college_ID')!.invalid && form.get('college_ID')!.touched) {
+                <div class="invalid-feedback">College is required.</div>
               }
+              @if (errors['college_ID']) { <div class="text-danger small mt-1">{{ errors['college_ID'] }}</div> }
             </div>
-            <div class="field">
-              <label for="dob">Date of Birth</label>
-              <input id="dob" type="date" formControlName="dob" />
-              @if (errors['dob']) {
-                <span class="field-error">{{ errors['dob'] }}</span>
-              }
-            </div>
-          </div>
 
-          <div class="section-title">Assignment</div>
-
-          <div class="field">
-            <label for="college_ID">College <span class="required">*</span></label>
-            <select id="college_ID" formControlName="college_ID">
-              <option value="">— Select a college —</option>
-              @for (college of preloadData?.colleges; track college.id) {
-                <option [value]="college.id">{{ college.value }}</option>
-              }
-            </select>
-            @if (form.get('college_ID')!.invalid && form.get('college_ID')!.touched) {
-              <span class="field-error">College is required.</span>
-            }
-            @if (errors['college_ID']) {
-              <span class="field-error">{{ errors['college_ID'] }}</span>
-            }
-          </div>
-
-          <div class="row">
-            <div class="field">
-              <label for="course_ID">Course <span class="required">*</span></label>
-              <select
-                id="course_ID"
-                formControlName="course_ID"
-                (change)="onCourseChange($event)"
-                [class.invalid]="form.get('course_ID')!.invalid && form.get('course_ID')!.touched"
-              >
-                <option value="">— Select a course —</option>
-                @for (course of preloadData?.courses; track course.id) {
-                  <option [value]="course.id">{{ course.value }}</option>
+            <div class="row g-3 mb-3">
+              <div class="col">
+                <label for="course_ID" class="form-label fw-semibold">Course <span class="text-danger">*</span></label>
+                <select id="course_ID" formControlName="course_ID" (change)="onCourseChange($event)" class="form-select"
+                  [class.is-invalid]="form.get('course_ID')!.invalid && form.get('course_ID')!.touched">
+                  <option value="">— Select a course —</option>
+                  @for (course of preloadData?.courses; track course.id) {
+                    <option [value]="course.id">{{ course.value }}</option>
+                  }
+                </select>
+                @if (form.get('course_ID')!.invalid && form.get('course_ID')!.touched) {
+                  <div class="invalid-feedback">Course is required.</div>
                 }
-              </select>
-              @if (form.get('course_ID')!.invalid && form.get('course_ID')!.touched) {
-                <span class="field-error">Course is required.</span>
-              }
-              @if (errors['course_ID']) {
-                <span class="field-error">{{ errors['course_ID'] }}</span>
-              }
-            </div>
-            <div class="field">
-              <label for="subject_ID">Subject <span class="required">*</span></label>
-              <select id="subject_ID" formControlName="subject_ID">
-                <option value="">— Select a subject —</option>
-                @for (subject of preloadData?.subjects; track subject.id) {
-                  <option [value]="subject.id">{{ subject.value }}</option>
+                @if (errors['course_ID']) { <div class="text-danger small mt-1">{{ errors['course_ID'] }}</div> }
+              </div>
+              <div class="col">
+                <label for="subject_ID" class="form-label fw-semibold">Subject <span class="text-danger">*</span></label>
+                <select id="subject_ID" formControlName="subject_ID" class="form-select"
+                  [class.is-invalid]="form.get('subject_ID')!.invalid && form.get('subject_ID')!.touched">
+                  <option value="">— Select a subject —</option>
+                  @for (subject of preloadData?.subjects; track subject.id) {
+                    <option [value]="subject.id">{{ subject.value }}</option>
+                  }
+                </select>
+                @if (form.get('subject_ID')!.invalid && form.get('subject_ID')!.touched) {
+                  <div class="invalid-feedback">Subject is required.</div>
                 }
-              </select>
-              @if (form.get('subject_ID')!.invalid && form.get('subject_ID')!.touched) {
-                <span class="field-error">Subject is required.</span>
-              }
-              @if (errors['subject_ID']) {
-                <span class="field-error">{{ errors['subject_ID'] }}</span>
-              }
+                @if (errors['subject_ID']) { <div class="text-danger small mt-1">{{ errors['subject_ID'] }}</div> }
+              </div>
             </div>
-          </div>
 
-          <div class="actions">
-            <button type="submit" class="btn btn-success" [disabled]="saving || deleting">
-              <i class="bi bi-floppy"></i> {{ saving ? 'Saving…' : 'Save' }}
-            </button>
-            @if (isEditMode) {
-              <button type="button" class="btn btn-danger" (click)="onDelete()" [disabled]="saving || deleting">
-                <i class="bi bi-trash"></i> {{ deleting ? 'Deleting…' : 'Delete' }}
+            <div class="d-flex gap-2 mt-4">
+              <button type="submit" class="btn btn-success" [disabled]="saving || deleting">
+                <i class="bi bi-floppy"></i> {{ saving ? 'Saving…' : 'Save' }}
               </button>
-            }
-            <button type="button" class="btn btn-secondary" (click)="goBack()" [disabled]="saving || deleting">
-              <i class="bi bi-x-circle"></i> Cancel
-            </button>
-          </div>
+              @if (isEditMode) {
+                <button type="button" class="btn btn-danger" (click)="onDelete()" [disabled]="saving || deleting">
+                  <i class="bi bi-trash"></i> {{ deleting ? 'Deleting…' : 'Delete' }}
+                </button>
+              }
+              <button type="button" class="btn btn-secondary" (click)="goBack()" [disabled]="saving || deleting">
+                <i class="bi bi-x-circle"></i> Cancel
+              </button>
+            </div>
 
-        </form>
-      }
+          </form>
+        }
+      </div>
     </div>
+
   </div>
 </div>

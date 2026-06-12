@@ -1,63 +1,71 @@
-<div class="page-wrapper">
-    <div class="page-container">
-        <div class="page-header">
-            <button class="btn-back" (click)="goBack()">&#8592; Back</button>
-            <h1>Subjects</h1>
-            <button class="btn-add" (click)="forward('/subject/new')">+ Add Subject</button>
-        </div>
+<div class="min-vh-100 py-4 px-3 page-bg">
+  <div class="mx-auto" style="max-width: 960px">
 
-        @if (loading) {
-        <div class="state-box">
-            <span class="spinner"></span>
-            <p>Loading subjects...</p>
-        </div>
-        } @else if (searchForm.error) {
-        <div class="error-banner">{{ searchForm.message }}</div>
-        } @else if (searchForm.listdata.length === 0) {
-        <div class="state-box">
-            <p>No subjects found.</p>
-        </div>
-        } @else {
-
-        <form [formGroup]="form" class="d-flex align-items-center gap-2 mb-3" (ngSubmit)="doSearch()">
-            <input type="text" formControlName="subjectName" placeholder="Subject name" class="form-control" />
-            <input type="text" formControlName="subjectDescription" placeholder="Description" class="form-control" />
-            <select formControlName="course_ID" class="form-select">
-                <option value="">All Courses</option>
-                @for (course of preloadData?.courses; track course.id) {
-                <option [value]="course.id">{{ course.value }}</option>
-                }
-            </select>
-            <input type="date" formControlName="dob" class="form-control" />
-            <button type="submit" class="btn btn-primary">Search</button>
-        </form>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Subject Name</th>
-                        <th>Description</th>
-                        <th>Course</th>
-                        <th>Date</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (subject of searchForm.listdata; track subject.id) {
-                    <tr>
-                        <td class="cell-id">{{ $index + 1 }}</td>
-                        <td class="cell-name">{{ subject.subjectName }}</td>
-                        <td class="cell-desc">{{ subject.subjectDescription || '—' }}</td>
-                        <td class="cell-text">{{ subject.courseName || '—' }}</td>
-                        <td class="cell-text">{{ subject.dob || '—' }}</td>
-                        <td class="cell-action"><button class="btn btn-sm btn-primary" (click)="edit(subject)"><i class="bi bi-pencil-square"></i> Edit</button></td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
-            <p class="count">{{ searchForm.listdata.length }} subject{{ searchForm.listdata.length !== 1 ? 's' : '' }}</p>
-        </div>
-        }
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <button class="btn btn-outline-light btn-sm" (click)="goBack()">&#8592; Back</button>
+      <h1 class="h4 text-white fw-bold mb-0">Subjects</h1>
+      <button class="btn btn-danger btn-sm ms-auto" (click)="forward('/subject/new')">+ Add Subject</button>
     </div>
+
+    @if (loading) {
+      <div class="card shadow text-center py-5 text-secondary">
+        <div class="spinner-border mx-auto mb-3" style="color: #0f3460" role="status"></div>
+        <p class="mb-0">Loading subjects...</p>
+      </div>
+    } @else if (searchForm.error) {
+      <div class="alert alert-danger">{{ searchForm.message }}</div>
+    } @else if (searchForm.listdata.length === 0) {
+      <div class="card shadow text-center py-5 text-secondary">
+        <p class="mb-0">No subjects found.</p>
+      </div>
+    } @else {
+      <form [formGroup]="form" class="d-flex align-items-center gap-2 mb-3" (ngSubmit)="doSearch()">
+        <input type="text" formControlName="subjectName" placeholder="Subject name" class="form-control" />
+        <input type="text" formControlName="subjectDescription" placeholder="Description" class="form-control" />
+        <select formControlName="course_ID" class="form-select">
+          <option value="">All Courses</option>
+          @for (course of preloadData?.courses; track course.id) {
+            <option [value]="course.id">{{ course.value }}</option>
+          }
+        </select>
+        <input type="date" formControlName="dob" class="form-control" />
+        <button type="submit" class="btn btn-primary">Search</button>
+      </form>
+
+      <div class="card shadow overflow-hidden">
+        <table class="table table-hover table-bordered mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th>#</th>
+              <th>Subject Name</th>
+              <th>Description</th>
+              <th>Course</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (subject of searchForm.listdata; track subject.id) {
+              <tr>
+                <td class="text-secondary small">{{ $index + 1 }}</td>
+                <td class="fw-medium">{{ subject.subjectName }}</td>
+                <td class="text-secondary small">{{ subject.subjectDescription || '—' }}</td>
+                <td class="text-secondary small">{{ subject.courseName || '—' }}</td>
+                <td class="text-secondary small">{{ subject.dob || '—' }}</td>
+                <td>
+                  <button class="btn btn-sm btn-primary" (click)="edit(subject)">
+                    <i class="bi bi-pencil-square"></i> Edit
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        <div class="text-end text-secondary small px-3 py-2 bg-light border-top">
+          {{ searchForm.listdata.length }} subject{{ searchForm.listdata.length !== 1 ? 's' : '' }}
+        </div>
+      </div>
+    }
+
+  </div>
 </div>
