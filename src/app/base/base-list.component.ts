@@ -23,15 +23,6 @@ export abstract class BaseListComponent implements OnInit {
   };
   loading = true;
 
-  get totalPages(): number {
-    return Math.ceil(this.searchForm.listdata.length / this.searchForm.pageSize);
-  }
-
-  get pagedData(): any[] {
-    const start = (this.searchForm.pageNo - 1) * this.searchForm.pageSize;
-    return this.searchForm.listdata.slice(start, start + this.searchForm.pageSize);
-  }
-
   /** Route path of the list page — used by `goBack()` and after save/delete. */
   protected abstract pageUrl: string;
 
@@ -65,6 +56,24 @@ export abstract class BaseListComponent implements OnInit {
   }
 
   /**
+   * Navigates to the next page of results.
+   */
+  next() {
+    this.searchForm.pageNo++;
+    this.doSearch();
+  }
+
+  /**
+    * Navigates to the previous page of results.
+    */
+  previous() {
+    if (this.searchForm.pageNo > 1) {
+      this.searchForm.pageNo--;
+    }
+    this.doSearch();
+  }
+
+  /**
     * Returns the service instance responsible for CRUD operations on this entity.
     * Called by `onSave()`, `onDelete()`, and `loadEntity()`.
     */
@@ -87,6 +96,10 @@ export abstract class BaseListComponent implements OnInit {
       }
     });
 
+    //add searchForm.pageNo and pageSize to body
+    body.pageNo = this.searchForm.pageNo;
+    body.pageSize = this.searchForm.pageSize;
+
     this.getService().search(body,
       (response: any) => {
         this.searchForm.listdata = response.data;
@@ -102,4 +115,5 @@ export abstract class BaseListComponent implements OnInit {
 
     );
   }
+
 }
