@@ -1,90 +1,67 @@
-.welcome-wrapper {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.ors-hero {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-  padding: 1rem;
+  border-bottom: 3px solid #e0a830;
 }
 
-.welcome-card {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 3rem 2.5rem;
-  width: 100%;
-  max-width: 420px;
-  text-align: center;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+.ors-logo-badge {
+  background: #e0a830;
+  color: #1a1a2e;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  padding: 0.3rem 0.75rem;
+  border-radius: 6px;
+  flex-shrink: 0;
 }
 
-.badge {
-  display: inline-block;
-  background: #0f3460;
-  color: #ffffff;
+/* Card base */
+.ors-card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.ors-card:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.ors-card .card-header {
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  color: #fff;
+  border-radius: 10px 10px 0 0 !important;
+  padding: 0.85rem 1.25rem;
+}
+
+/* Category header colours */
+.ors-header-admin       { background: #0f3460; }
+.ors-header-institution { background: #6f42c1; }
+.ors-header-people      { background: #198754; }
+.ors-header-academics   { background: #d35400; }
+
+/* Category action buttons */
+.btn-admin,
+.btn-institution,
+.btn-people,
+.btn-academics {
+  color: #fff;
+  border: none;
   font-size: 0.875rem;
-  font-weight: 700;
-  letter-spacing: 0.15rem;
-  padding: 0.375rem 1rem;
-  border-radius: 20px;
-  margin-bottom: 1.5rem;
 }
 
-h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #111827;
-  margin: 0 0 1rem;
-}
+.btn-admin       { background: #0f3460; }
+.btn-institution { background: #6f42c1; }
+.btn-people      { background: #198754; }
+.btn-academics   { background: #d35400; }
 
-p {
-  color: #6b7280;
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  margin: 0 0 2rem;
-}
+.btn-admin:hover       { background: #0a2545; color: #fff; }
+.btn-institution:hover { background: #5a329e; color: #fff; }
+.btn-people:hover      { background: #157347; color: #fff; }
+.btn-academics:hover   { background: #b04600; color: #fff; }
 
-p strong {
-  color: #374151;
-}
-
-.nav-links {
-  display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
-  width: 100%;
-  margin-bottom: 1rem;
-}
-
-.btn-nav {
-  display: block;
-  padding: 0.625rem 1rem;
-  background: #0f3460;
-  color: #ffffff;
-  border-radius: 8px;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  text-decoration: none;
-  text-align: center;
-  transition: background 0.2s;
-}
-
-.btn-nav:hover {
-  background: #16213e;
-}
-
-.btn-logout {
-  padding: 0.625rem 2rem;
-  background: transparent;
-  color: #0f3460;
-  border: 1.5px solid #0f3460;
-  border-radius: 8px;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-}
-
-.btn-logout:hover {
-  background: #0f3460;
-  color: #ffffff;
+.card-body .btn {
+  font-size: 0.875rem;
 }

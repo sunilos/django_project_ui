@@ -36,9 +36,10 @@ export class LoginComponent {
     this.authService.signin(
       { loginId, password },
       (res) => {
-        //keep response.data.user object in the local storage for later use
-        localStorage.setItem('user', res.data.user);
-        console.log('Login successful:',JSON.stringify(localStorage.getItem('user')));
+        localStorage.setItem('user', JSON.stringify(res.data.user));
+        const u: any = JSON.parse(localStorage.getItem('user')!);
+        console.log('Login successful:', u.firstName + ' ' + u.lastName + ' (' + u.email + ')');
+      
         this.router.navigate(['/welcome']);
       },
       (res: any) => {

@@ -1,0 +1,157 @@
+<div class="min-vh-100 py-4 px-3 page-bg">
+  <div class="mx-auto" style="max-width: 640px">
+
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <button class="btn btn-outline-light btn-sm" (click)="goBack()">&#8592; Back</button>
+      <h1 class="h4 text-white fw-bold mb-0">{{ title }}</h1>
+    </div>
+
+    <div class="card shadow">
+      <div class="card-body p-4">
+
+        @if (loading) {
+          <div class="text-center py-4 text-secondary">
+            <div class="spinner-border mb-3" style="color: #0f3460" role="status"></div>
+            <p class="mb-0">Loading user...</p>
+          </div>
+        } @else {
+
+          @if (errorMessage) {
+            <div class="alert alert-danger">{{ errorMessage }}</div>
+          }
+
+          <form [formGroup]="form" (ngSubmit)="onSave()">
+
+            <!-- Name -->
+            <div class="row g-3 mb-3">
+              <div class="col">
+                <label for="firstName" class="form-label fw-semibold">First Name <span class="text-danger">*</span></label>
+                <input id="firstName" type="text" formControlName="firstName" placeholder="First name"
+                  class="form-control" [class.is-invalid]="form.get('firstName')!.invalid && form.get('firstName')!.touched" />
+                @if (form.get('firstName')!.invalid && form.get('firstName')!.touched) {
+                  <div class="invalid-feedback">First name is required.</div>
+                }
+                @if (errors['firstName']) { <div class="text-danger small mt-1">{{ errors['firstName'] }}</div> }
+              </div>
+              <div class="col">
+                <label for="lastName" class="form-label fw-semibold">Last Name <span class="text-danger">*</span></label>
+                <input id="lastName" type="text" formControlName="lastName" placeholder="Last name"
+                  class="form-control" [class.is-invalid]="form.get('lastName')!.invalid && form.get('lastName')!.touched" />
+                @if (form.get('lastName')!.invalid && form.get('lastName')!.touched) {
+                  <div class="invalid-feedback">Last name is required.</div>
+                }
+                @if (errors['lastName']) { <div class="text-danger small mt-1">{{ errors['lastName'] }}</div> }
+              </div>
+            </div>
+
+            <!-- Login (email) -->
+            <div class="mb-3">
+              <label for="login" class="form-label fw-semibold">Login (Email) <span class="text-danger">*</span></label>
+              <input id="login" type="email" formControlName="login" placeholder="Enter email address"
+                class="form-control" [class.is-invalid]="form.get('login')!.invalid && form.get('login')!.touched" />
+              @if (form.get('login')!.touched) {
+                @if (form.get('login')!.hasError('required')) {
+                  <div class="invalid-feedback">Login email is required.</div>
+                } @else if (form.get('login')!.hasError('email')) {
+                  <div class="invalid-feedback">Enter a valid email address.</div>
+                }
+              }
+              @if (errors['login']) { <div class="text-danger small mt-1">{{ errors['login'] }}</div> }
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+              <label for="password" class="form-label fw-semibold">
+                Password @if (!isEditMode) { <span class="text-danger">*</span> }
+              </label>
+              <input id="password" type="password" formControlName="password" maxlength="20"
+                [placeholder]="isEditMode ? 'Leave blank to keep existing password' : 'Enter password'"
+                class="form-control" [class.is-invalid]="form.get('password')!.invalid && form.get('password')!.touched" />
+              @if (form.get('password')!.invalid && form.get('password')!.touched) {
+                <div class="invalid-feedback">Password is required.</div>
+              }
+              @if (errors['password']) { <div class="text-danger small mt-1">{{ errors['password'] }}</div> }
+            </div>
+
+            <!-- Role -->
+            <div class="mb-3">
+              <label for="role_id" class="form-label fw-semibold">Role <span class="text-danger">*</span></label>
+              <select id="role_id" formControlName="role_id" class="form-select"
+                [class.is-invalid]="form.get('role_id')!.invalid && form.get('role_id')!.touched">
+                <option value="">— Select a role —</option>
+                @for (role of roles; track role.id) {
+                  <option [value]="role.id">{{ role.name }}</option>
+                }
+              </select>
+              @if (form.get('role_id')!.invalid && form.get('role_id')!.touched) {
+                <div class="invalid-feedback">Role is required.</div>
+              }
+              @if (errors['role_id']) { <div class="text-danger small mt-1">{{ errors['role_id'] }}</div> }
+            </div>
+
+            <!-- Mobile & DOB -->
+            <div class="row g-3 mb-3">
+              <div class="col">
+                <label for="mobileNumber" class="form-label fw-semibold">Mobile Number <span class="text-danger">*</span></label>
+                <input id="mobileNumber" type="tel" formControlName="mobileNumber" placeholder="Mobile number" maxlength="15"
+                  class="form-control" [class.is-invalid]="form.get('mobileNumber')!.invalid && form.get('mobileNumber')!.touched" />
+                @if (form.get('mobileNumber')!.invalid && form.get('mobileNumber')!.touched) {
+                  <div class="invalid-feedback">Mobile number is required.</div>
+                }
+                @if (errors['mobileNumber']) { <div class="text-danger small mt-1">{{ errors['mobileNumber'] }}</div> }
+              </div>
+              <div class="col">
+                <label for="dob" class="form-label fw-semibold">Date of Birth</label>
+                <input id="dob" type="date" formControlName="dob" class="form-control" />
+                @if (errors['dob']) { <div class="text-danger small mt-1">{{ errors['dob'] }}</div> }
+              </div>
+            </div>
+
+            <!-- Gender -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Gender</label>
+              <div class="d-flex gap-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" formControlName="gender" id="genderMale" value="Male" />
+                  <label class="form-check-label" for="genderMale">Male</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" formControlName="gender" id="genderFemale" value="Female" />
+                  <label class="form-check-label" for="genderFemale">Female</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" formControlName="gender" id="genderOther" value="Other" />
+                  <label class="form-check-label" for="genderOther">Other</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Photo URL -->
+            <div class="mb-3">
+              <label for="photo" class="form-label fw-semibold">Photo URL</label>
+              <input id="photo" type="text" formControlName="photo" placeholder="Enter photo URL (optional)"
+                class="form-control" maxlength="200" />
+              @if (errors['photo']) { <div class="text-danger small mt-1">{{ errors['photo'] }}</div> }
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+              <button type="submit" class="btn btn-success" [disabled]="saving || deleting">
+                <i class="bi bi-floppy"></i> {{ saving ? 'Saving…' : 'Save' }}
+              </button>
+              @if (isEditMode) {
+                <button type="button" class="btn btn-danger" (click)="onDelete()" [disabled]="saving || deleting">
+                  <i class="bi bi-trash"></i> {{ deleting ? 'Deleting…' : 'Delete' }}
+                </button>
+              }
+              <button type="button" class="btn btn-secondary" (click)="goBack()" [disabled]="saving || deleting">
+                <i class="bi bi-x-circle"></i> Cancel
+              </button>
+            </div>
+
+          </form>
+        }
+      </div>
+    </div>
+
+  </div>
+</div>
