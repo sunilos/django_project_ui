@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login';
 import { WelcomeComponent } from './welcome/welcome';
+import { ChangePasswordComponent } from './change-password/change-password';
+import { ForgetPasswordComponent } from './forget-password/forget-password';
 import { UserListComponent } from './user-list/user-list';
 import { UserComponent } from './user/user';
 import { RoleListComponent } from './role-list/role-list';
@@ -23,6 +25,8 @@ import { TimeTableComponent } from './timetable/timetable';
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'welcome', component: WelcomeComponent },
+  { path: 'change-password', component: ChangePasswordComponent },
+  { path: 'forget-password', component: ForgetPasswordComponent },
   { path: 'users', component: UserListComponent },
   { path: 'user/new', component: UserComponent },
   { path: 'user/:id', component: UserComponent },

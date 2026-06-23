@@ -87,6 +87,22 @@ export class AuthService {
     return localStorage.getItem('refresh_token');
   }
 
+  forgotPassword(
+    login: string,
+    onSuccess: (res: any) => void,
+    onError: (err: any) => void
+  ): void {
+    this.http.post(ORSAPI.FORGOT_PASSWORD_API, { login }).subscribe({ next: onSuccess, error: onError });
+  }
+
+  changePassword(
+    body: { oldPassword: string; newPassword: string },
+    onSuccess: (res: any) => void,
+    onError: (err: any) => void
+  ): void {
+    this.http.post(ORSAPI.CHANGE_PASSWORD_API, body).subscribe({ next: onSuccess, error: onError });
+  }
+
   logout(): void {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('refresh_token');

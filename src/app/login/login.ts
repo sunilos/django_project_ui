@@ -1,12 +1,12 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -14,6 +14,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   loading = false;
   errorMessage = '';
+  showPassword = false;
 
   private readonly cdr = inject(ChangeDetectorRef);
 
@@ -38,8 +39,7 @@ export class LoginComponent {
       (res) => {
         localStorage.setItem('user', JSON.stringify(res.data.user));
         const u: any = JSON.parse(localStorage.getItem('user')!);
-        console.log('Login successful:', u.firstName + ' ' + u.lastName + ' (' + u.email + ')');
-      
+        console.log('Login successful:', u.firstName + ' ' + u.lastName + ' (' + u.login + ')');
         this.router.navigate(['/welcome']);
       },
       (res: any) => {
