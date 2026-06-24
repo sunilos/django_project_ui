@@ -3,6 +3,7 @@ import { LoginComponent } from './login/login';
 import { WelcomeComponent } from './welcome/welcome';
 import { ChangePasswordComponent } from './change-password/change-password';
 import { ForgetPasswordComponent } from './forget-password/forget-password';
+import { RegisterComponent } from './register/register';
 import { UserListComponent } from './user-list/user-list';
 import { UserComponent } from './user/user';
 import { RoleListComponent } from './role-list/role-list';
@@ -27,6 +28,7 @@ export const routes: Routes = [
   { path: 'welcome', component: WelcomeComponent },
   { path: 'change-password', component: ChangePasswordComponent },
   { path: 'forget-password', component: ForgetPasswordComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'users', component: UserListComponent },
   { path: 'user/new', component: UserComponent },
   { path: 'user/:id', component: UserComponent },

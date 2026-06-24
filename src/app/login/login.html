@@ -1,7 +1,9 @@
 <div class="login-wrapper">
   <div class="login-card">
     <div class="login-header">
-      <h1>ORS</h1>
+      <img src="logo-black.jpg" alt="ORS" class="logo-img" #logoImg
+           (error)="logoImg.style.display='none'; logoText.style.display='block'">
+      <h1 #logoText style="display:none">ORS</h1>
       <p>Online Registration System</p>
     </div>
 
@@ -56,6 +58,8 @@
 
     <div class="footer-links">
       <a routerLink="/forget-password">Forgot Password?</a>
+      <span class="divider">|</span>
+      <a routerLink="/register">Create an Account</a>
     </div>
   </div>
 </div>

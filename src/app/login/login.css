@@ -167,3 +167,8 @@
 .footer-links a:hover {
   text-decoration: underline;
 }
+
+.footer-links .divider {
+  color: #d1d5db;
+  margin: 0 0.5rem;
+}

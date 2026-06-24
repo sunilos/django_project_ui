@@ -87,6 +87,17 @@ export class AuthService {
     return localStorage.getItem('refresh_token');
   }
 
+  register(
+    body: {
+      firstName: string; lastName: string; login: string;
+      password: string; dob?: string | null; mobileNumber: string; gender: string;
+    },
+    onSuccess: (res: any) => void,
+    onError: (err: any) => void
+  ): void {
+    this.http.post(ORSAPI.REGISTER_API, body).subscribe({ next: onSuccess, error: onError });
+  }
+
   forgotPassword(
     login: string,
     onSuccess: (res: any) => void,
