@@ -20,8 +20,8 @@
       </div>
     } @else {
       <form [formGroup]="form" class="d-flex align-items-center gap-2 mb-3" (ngSubmit)="doSearch()">
-        <input type="text" formControlName="subjectName" placeholder="Subject name" class="form-control" />
-        <input type="text" formControlName="subjectDescription" placeholder="Description" class="form-control" />
+        <input type="text" formControlName="name" placeholder="Subject name" class="form-control" />
+        <input type="text" formControlName="description" placeholder="Description" class="form-control" />
         <select formControlName="course_ID" class="form-select">
           <option value="">All Courses</option>
           @for (course of preloadData?.courses; track course.id) {
@@ -48,8 +48,8 @@
             @for (subject of searchForm.listdata; track subject.id) {
               <tr>
                 <td class="text-secondary small">{{ (searchForm.pageNo - 1) * searchForm.pageSize + $index + 1 }}</td>
-                <td class="fw-medium">{{ subject.subjectName }}</td>
-                <td class="text-secondary small">{{ subject.subjectDescription || '—' }}</td>
+                <td class="fw-medium">{{ subject.name }}</td>
+                <td class="text-secondary small">{{ subject.description || '—' }}</td>
                 <td class="text-secondary small">{{ subject.courseName || '—' }}</td>
                 <td class="text-secondary small">{{ subject.dob || '—' }}</td>
                 <td>

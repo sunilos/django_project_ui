@@ -28,8 +28,8 @@ export class SubjectComponent extends BaseComponent {
 
   protected override buildForm(): FormGroup {
     return this.fb.group({
-      subjectName: ['', Validators.required],
-      subjectDescription: [''],
+      name: ['', Validators.required],
+      description: [''],
       dob: [''],
       course_ID: ['', Validators.required],
       courseName: ['']
@@ -38,7 +38,7 @@ export class SubjectComponent extends BaseComponent {
 
   protected override populateForm(s: any): void {
     this.form.patchValue({
-      subjectName: s.subjectName, subjectDescription: s.subjectDescription ?? '',
+      name: s.name, description: s.description ?? '',
       dob: s.dob ?? '', course_ID: s.course_ID, courseName: s.courseName
     });
   }

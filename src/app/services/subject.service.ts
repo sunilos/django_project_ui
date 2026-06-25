@@ -5,8 +5,8 @@ import { BaseService } from './base.service';
 
 export interface Subject {
   id: number;
-  subjectName: string;
-  subjectDescription?: string;
+  name: string;
+  description?: string;
   dob?: string;
   course_ID: number;
   courseName: string;

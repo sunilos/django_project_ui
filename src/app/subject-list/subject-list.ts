@@ -23,8 +23,8 @@ export class SubjectListComponent extends BaseListComponent {
 
   protected override buildForm(): FormGroup {
     return this.fb.group({
-      subjectName: ['', Validators.required],
-      subjectDescription: [''],
+      name: ['', Validators.required],
+      description: [''],
       dob: [''],
       course_ID: ['', Validators.required],
       courseName: ['']

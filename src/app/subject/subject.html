@@ -23,19 +23,19 @@
           <form [formGroup]="form" (ngSubmit)="onSave()">
 
             <div class="mb-3">
-              <label for="subjectName" class="form-label fw-semibold">Subject Name <span class="text-danger">*</span></label>
-              <input id="subjectName" type="text" formControlName="subjectName" placeholder="Enter subject name"
-                class="form-control" [class.is-invalid]="form.get('subjectName')!.invalid && form.get('subjectName')!.touched" />
-              @if (form.get('subjectName')!.invalid && form.get('subjectName')!.touched) {
+              <label for="name" class="form-label fw-semibold">Subject Name <span class="text-danger">*</span></label>
+              <input id="name" type="text" formControlName="name" placeholder="Enter subject name"
+                class="form-control" [class.is-invalid]="form.get('name')!.invalid && form.get('name')!.touched" />
+              @if (form.get('name')!.invalid && form.get('name')!.touched) {
                 <div class="invalid-feedback">Subject name is required.</div>
               }
-              @if (errors['subjectName']) { <div class="text-danger small mt-1">{{ errors['subjectName'] }}</div> }
+              @if (errors['name']) { <div class="text-danger small mt-1">{{ errors['name'] }}</div> }
             </div>
 
             <div class="mb-3">
-              <label for="subjectDescription" class="form-label fw-semibold">Description</label>
-              <input id="subjectDescription" type="text" formControlName="subjectDescription" placeholder="Enter description" class="form-control" />
-              @if (errors['subjectDescription']) { <div class="text-danger small mt-1">{{ errors['subjectDescription'] }}</div> }
+              <label for="description" class="form-label fw-semibold">Description</label>
+              <input id="description" type="text" formControlName="description" placeholder="Enter description" class="form-control" />
+              @if (errors['description']) { <div class="text-danger small mt-1">{{ errors['description'] }}</div> }
             </div>
 
             <div class="row g-3 mb-3">
