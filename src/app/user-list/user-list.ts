@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { BaseListComponent } from '../base/base-list.component';
 import type { BaseService } from '../services/base.service';
+import { ORSAPI } from '../services/orsapi.config';
 
 @Component({
   selector: 'app-user-list',
@@ -15,6 +16,7 @@ import type { BaseService } from '../services/base.service';
 export class UserListComponent extends BaseListComponent {
 
   protected override pageUrl = '/user';
+  readonly baseUrl = ORSAPI.baseUrl;
 
   constructor(
     private fb: FormBuilder,
