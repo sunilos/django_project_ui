@@ -7,6 +7,13 @@
       <button class="btn btn-danger btn-sm ms-auto" (click)="forward('/timetable/new')">+ Add Time Table</button>
     </div>
 
+    <form [formGroup]="form" class="d-flex align-items-center gap-2 mb-3" (ngSubmit)="doSearch()">
+      <input type="text" formControlName="course_name" placeholder="Course" class="form-control" />
+      <input type="text" formControlName="subject_name" placeholder="Subject" class="form-control" />
+      <input type="text" formControlName="semester" placeholder="Semester" class="form-control" />
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
     @if (loading) {
       <div class="card shadow text-center py-5 text-secondary">
         <div class="spinner-border mx-auto mb-3" style="color: #0f3460" role="status"></div>
@@ -19,13 +26,6 @@
         <p class="mb-0">No time tables found.</p>
       </div>
     } @else {
-      <form [formGroup]="form" class="d-flex align-items-center gap-2 mb-3" (ngSubmit)="doSearch()">
-        <input type="text" formControlName="course_name" placeholder="Course" class="form-control" />
-        <input type="text" formControlName="subject_name" placeholder="Subject" class="form-control" />
-        <input type="text" formControlName="semester" placeholder="Semester" class="form-control" />
-        <button type="submit" class="btn btn-primary">Search</button>
-      </form>
-
       <div class="card shadow overflow-hidden">
         <div class="table-responsive">
           <table class="table table-hover table-bordered mb-0">

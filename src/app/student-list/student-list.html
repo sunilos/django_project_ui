@@ -7,6 +7,14 @@
       <button class="btn btn-danger btn-sm ms-auto" (click)="forward('/student/new')">+ Add Student</button>
     </div>
 
+    <form [formGroup]="form" class="d-flex align-items-center gap-2 mb-3" (ngSubmit)="doSearch()">
+      <input type="text" formControlName="firstName" placeholder="First name" class="form-control" />
+      <input type="text" formControlName="lastName" placeholder="Last name" class="form-control" />
+      <input type="email" formControlName="email" placeholder="Email" class="form-control" />
+      <input type="text" formControlName="collegeName" placeholder="College" class="form-control" />
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
     @if (loading) {
       <div class="card shadow text-center py-5 text-secondary">
         <div class="spinner-border mx-auto mb-3" style="color: #0f3460" role="status"></div>
@@ -19,14 +27,6 @@
         <p class="mb-0">No students found.</p>
       </div>
     } @else {
-      <form [formGroup]="form" class="d-flex align-items-center gap-2 mb-3" (ngSubmit)="doSearch()">
-        <input type="text" formControlName="firstName" placeholder="First name" class="form-control" />
-        <input type="text" formControlName="lastName" placeholder="Last name" class="form-control" />
-        <input type="email" formControlName="email" placeholder="Email" class="form-control" />
-        <input type="text" formControlName="collegeName" placeholder="College" class="form-control" />
-        <button type="submit" class="btn btn-primary">Search</button>
-      </form>
-
       <div class="card shadow overflow-hidden">
         <div class="table-responsive">
           <table class="table table-hover table-bordered mb-0">

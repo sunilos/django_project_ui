@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
+import { ORSAPI } from '../services/orsapi.config';
 
 @Component({
   selector: 'app-navbar',
@@ -43,13 +44,26 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   get userName(): string {
-    const raw = localStorage.getItem('user');
-    if (!raw) return 'User';
+    const userinfo = localStorage.getItem('user');
+    if (!userinfo) return 'User';
     try {
-      const parsed = JSON.parse(raw);
-      return parsed?.firstName ? `${parsed.firstName} ${parsed.lastName ?? ''} (  ${parsed.login ?? ''}) `.trim() : raw;
+      const parsed = JSON.parse(userinfo);
+      return parsed?.firstName ? `${parsed.firstName} ${parsed.lastName ?? ''} (  ${parsed.login ?? ''}) `.trim() : userinfo;
     } catch {
-      return raw;
+      return userinfo;
     }
   }
+
+  get userPhoto(): string {
+    const userinfo = localStorage.getItem('user');
+    if (!userinfo) return '';
+    try {
+      const parsed = JSON.parse(userinfo);
+      if (!parsed?.photo) return '';
+      return `${ORSAPI.baseUrl}/media/${parsed.photo}`;
+    } catch {
+      return '';
+    }
+  }
+
 }

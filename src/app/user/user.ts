@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService, User } from '../services/user.service';
 import { RoleService } from '../services/role.service';
 import { BaseComponent } from '../base/base.component';
+import { ORSAPI } from '../services/orsapi.config';
 
 @Component({
   selector: 'app-user',
@@ -18,6 +19,9 @@ export class UserComponent extends BaseComponent {
   override get title(): string { return this.isEditMode ? 'Edit User' : 'Add User'; }
 
   roles: any[] = [];
+  readonly baseUrl = ORSAPI.baseUrl;
+  photoPreview: string | null = null;
+  photoUploading = false;
   private readonly cdr2 = inject(ChangeDetectorRef);
 
   constructor(
@@ -42,49 +46,73 @@ export class UserComponent extends BaseComponent {
   protected override loadDropdowns(): void {
     this.roleService.search({ pageNo: 1, pageSize: 100 },
       (res: any) => { this.roles = res.data ?? []; this.cdr2.markForCheck(); },
-      () => {}
+      () => { }
     );
   }
 
   protected override buildForm(): FormGroup {
     return this.fb.group({
-      firstName:    ['', Validators.required],
-      lastName:     ['', Validators.required],
-      login:        ['', [Validators.required, Validators.email]],
-      password:     [''],
-      dob:          [''],
-      role_id:      ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      login: ['', [Validators.required, Validators.email]],
+      password: [''],
+      dob: [''],
+      role_id: ['', Validators.required],
       mobileNumber: ['', Validators.required],
-      gender:       ['Male'],
-      photo:        ['']
+      gender: ['Male'],
+      photo: ['']
     });
   }
 
   protected override populateForm(u: any): void {
     this.form.patchValue({
-      firstName:    u.firstName,
-      lastName:     u.lastName,
-      login:        u.login,
-      dob:          u.dob ?? '',
-      role_id:      u.role_id,
+      firstName: u.firstName,
+      lastName: u.lastName,
+      login: u.login,
+      dob: u.dob ?? '',
+      role_id: u.role_id,
       mobileNumber: u.mobileNumber,
-      gender:       u.gender ?? 'Male',
-      photo:        u.photo ?? ''
+      gender: u.gender ?? 'Male',
+      photo: u.photo ?? ''
     });
+    this.photoPreview = u.photo ? `${this.baseUrl}/media/${u.photo}` : null;
+  }
+
+  onPhotoSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file || !this.entityId) return;
+    this.photoPreview = URL.createObjectURL(file);
+    this.photoUploading = true;
+    this.cdr2.markForCheck();
+    this.userService.uploadPhoto(this.entityId, file,
+      (res: any) => {
+        this.photoUploading = false;
+        const filename = res?.photo ?? res?.filename ?? '';
+        if (filename) {
+          this.form.patchValue({ photo: filename });
+          this.photoPreview = `${this.baseUrl}/media/${filename}`;
+        }
+        this.cdr2.markForCheck();
+      },
+      () => {
+        this.photoUploading = false;
+        this.cdr2.markForCheck();
+      }
+    );
   }
 
   protected override getBody(): User {
     const v = this.form.value;
     const body: User = {
-      id:           this.entityId ?? 0,
-      firstName:    v.firstName,
-      lastName:     v.lastName,
-      login:        v.login,
-      dob:          v.dob || null,
-      role_id:      v.role_id,
+      id: this.entityId ?? 0,
+      firstName: v.firstName,
+      lastName: v.lastName,
+      login: v.login,
+      dob: v.dob || null,
+      role_id: v.role_id,
       mobileNumber: v.mobileNumber,
-      gender:       v.gender || 'Male',
-      photo:        v.photo || ''
+      gender: v.gender || 'Male',
+      photo: v.photo || ''
     };
     if (v.password) body['password'] = v.password;
     return body;

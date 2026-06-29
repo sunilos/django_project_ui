@@ -26,4 +26,10 @@ export class UserService extends BaseService {
     this.url = ORSAPI.USER_API;
     this.supportsPreload = false;
   }
+
+  uploadPhoto(userId: number, file: File, onSuccess: (data: any) => void, onError: (error: any) => void): void {
+    const fd = new FormData();
+    fd.append('photo', file);
+    this.serviceLocator.http.post<any>(`${ORSAPI.UPLOAD_PHOTO_API}${userId}/`, fd, onSuccess, onError);
+  }
 }
